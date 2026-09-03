@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Heatmaps | Ethan Aidam</title>
+  <meta name="description" content="Flask and Leaflet.js web app for exploring Strava activities as interactive routes with map themes, geosearch, and activity details.">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body><main class="case-page">
+      <header class="case-hero">
+        <nav><a href="/">Ethan Aidam</a><a href="/#projects">Projects</a><a href="https://github.com/e-aidam/Heatmaps">GitHub</a></nav>
+        <p class="eyebrow">Geospatial activity analytics</p>
+        <h1>Heatmaps</h1>
+        <p>Flask and Leaflet.js web app for exploring Strava activities as interactive routes with map themes, geosearch, and activity details.</p>
+        <div class="case-actions"><a href="https://github.com/e-aidam/Heatmaps">View GitHub</a><a href="/#projects">Back to portfolio</a></div>
+      </header>
+      
+      <section class="case-section heatmaps-background-section">
+    <div class="case-section-head">
+      <p class="section-label">Background</p>
+      <h2>Heatmaps makes Strava activity history explorable on an interactive map instead of a static list of workouts.</h2>
+      <p class="case-copy">Heatmaps is a CS50 final project web app for exploring Ethan Aidam&#39;s past Strava activities on an interactive map. A Flask backend serves the app, while HTML, CSS, and JavaScript power the frontend. The map view turns activity history into routes drawn as polylines, so users can click a route and inspect details like activity name, distance, and duration.</p>
+      <p class="case-copy">The goal is an accessible route-viewing interface rather than a physiological model. Leaflet.js handles the map, Stadia Maps and OpenStreetMap provide tile and search support, and the interface includes customizable themes such as outdoors, dark mode, and topographic. The app also supports geosearch and automatically zooms toward the athlete&#39;s home city based on Strava data.</p>
+    </div>
+    <div class="project-video-frame"><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/a-BCQkuSGDY" title="Heatmaps project demo video"></iframe></div>
+  </section>
+  <section class="case-section">
+    <div class="case-section-head"><p class="section-label">Project Workflow</p><h2>From Strava activities to interactive geospatial layers.</h2><p class="case-copy">The app workflow keeps data access, transformation, serving, and browser rendering separated so route data can become a responsive Leaflet map experience.</p></div>
+    <div class="workflow-strip"><article>
+        <span>01</span>
+        <strong>Strava authorization</strong>
+        <p>Connect the app to authorized Strava activity records.</p>
+      </article><article>
+        <span>02</span>
+        <strong>Activity ingestion</strong>
+        <p>Retrieve route and workout metadata for analysis.</p>
+      </article><article>
+        <span>03</span>
+        <strong>Geospatial transform</strong>
+        <p>Prepare activity points and route data for browser rendering.</p>
+      </article><article>
+        <span>04</span>
+        <strong>Flask interface</strong>
+        <p>Serve the app views and data endpoints for the frontend.</p>
+      </article><article>
+        <span>05</span>
+        <strong>Leaflet rendering</strong>
+        <p>Display map layers, heatmap overlays, and route behavior patterns.</p>
+      </article></div>
+  </section>
+      
+      
+    </main></body>
+</html>

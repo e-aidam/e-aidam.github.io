@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Last Mile Health KPI Agent | Ethan Aidam</title>
+  <meta name="description" content="LangGraph multi-agent text-to-SQL system for querying global health KPI data in natural language.">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body><main class="case-page">
+      <header class="case-hero">
+        <nav><a href="/">Ethan Aidam</a><a href="/#projects">Projects</a><a href="https://github.com/Last-Mile-Health/lmd-2-agent">GitHub</a></nav>
+        <p class="eyebrow">Global health analytics</p>
+        <h1>Last Mile Health KPI Agent</h1>
+        <p>LangGraph multi-agent text-to-SQL system for querying global health KPI data in natural language.</p>
+        <div class="case-actions"><a href="https://github.com/Last-Mile-Health/lmd-2-agent">View GitHub</a><a href="/#projects">Back to portfolio</a></div>
+      </header>
+      <section class="case-section case-two-col">
+        <div><p class="section-label">Background</p><h2>Program teams needed a faster way to retrieve community health worker training and operations metrics without hand-writing Redshift SQL for each analytical question.</h2><p class="case-copy">This project turns operational public-health questions into structured database queries. The core challenge is not only generating SQL, but generating it with enough schema context, guardrails, and retry behavior that a program team can trust repeated KPI lookups.</p><p class="case-copy">Read this page as a systems project: the visualizations show where the agent spends time, how a question flows through the pipeline, and how the backend returns a chart-ready contract instead of a raw notebook output.</p></div>
+        <div><p class="section-label">Project Workflow</p><article class="thought-row"><strong>Protect analytical access</strong><p>Route natural-language questions through an agent that can inspect schema context without exposing private warehouse data on the portfolio.</p></article><article class="thought-row"><strong>Constrain SQL generation</strong><p>Retrieve relevant schema, validate generated SQL, and use bounded correction when warehouse errors indicate a fixable query issue.</p></article><article class="thought-row"><strong>Reduce repeated latency</strong><p>Cache schema and repeated query context so common KPI questions can move from expensive discovery to faster answer synthesis.</p></article><article class="thought-row"><strong>Return frontend-ready charts</strong><p>When the user asks for a chart, emit a small chart_spec object that any portal charting library can render.</p></article></div>
+      </section>
+      
+    <section class="case-section lmd-figures-section">
+      <div class="case-section-head">
+        <p class="section-label">Planning Artifacts</p>
+        <h2>Architecture moved from hand sketch to workflow mockup.</h2>
+        <p class="case-copy">The sketch captures the original control-flow thinking: a master agent routes the request, schema retrieval decides whether cached metadata is enough, SQL generation and validation are separated, and bounded correction loops prevent uncontrolled retries.</p>
+      </div>
+      <div class="lmd-figure-grid">
+        <figure><img src="/lmd-case/planning-sketch.jpg" alt="Handwritten planning sketch showing the master agent and SQL workflow."><figcaption>Early planning sketch for the multi-agent SQL flow, including schema retrieval, validation, correction, and final error handling.</figcaption></figure>
+        <figure><img src="/lmd-case/n8n-architecture.png" alt="Visual workflow architecture mockup for the LMD 2.0 AI agent."><figcaption>Workflow mockup extracted from the deliverables PDF, used to reason about agent routing and execution order.</figcaption></figure>
+      </div>
+    </section>
+    <section class="case-section">
+      <div class="case-section-head"><p class="section-label">Architecture</p><h2>Natural language to guarded SQL.</h2><p class="case-copy">The workflow retrieves relevant schema context before generation, then validates and retries SQL in a bounded loop.</p></div>
+      <div class="workflow-strip"><article>
+        <span>01</span>
+        <strong>User question</strong>
+        <p>Portal sends message and optional dashboard page context.</p>
+      </article><article>
+        <span>02</span>
+        <strong>Master orchestrator</strong>
+        <p>Classifies whether database access and visualization are needed.</p>
+      </article><article>
+        <span>03</span>
+        <strong>Schema retrieval</strong>
+        <p>Searches cached Redshift schema metadata for relevant tables and columns.</p>
+      </article><article>
+        <span>04</span>
+        <strong>SQL generation</strong>
+        <p>Generates read-only SQL using only verified schema context.</p>
+      </article><article>
+        <span>05</span>
+        <strong>Validation + retry</strong>
+        <p>Checks SQL safety and retries bounded corrections when appropriate.</p>
+      </article><article>
+        <span>06</span>
+        <strong>Result formatter</strong>
+        <p>Summarizes query rows and prepares preview-safe response metadata.</p>
+      </article><article>
+        <span>07</span>
+        <strong>Visualization agent</strong>
+        <p>Builds a minimal chart_spec when the query result is plottable.</p>
+      </article></div>
+    </section>
+    <section class="case-section case-two-col">
+      <div><p class="section-label">Benchmarks</p><h2>Latency exposes where the agent does real work.</h2><p class="case-copy">Bars show average warm-request latency in seconds for representative prompts.</p><div class="chart-frame">
+    <svg class="native-chart bar-chart-svg" viewBox="0 0 760 250" role="img" aria-label="Average warm latency in seconds.">
+      <g class="bar-row-g" data-negative="false">
+            <text class="chart-category" x="10" y="56">What is a KPI?</text>
+            <rect class="chart-bar" x="210.00" y="36" width="141.34" height="28"></rect>
+            <text class="chart-value-label" x="359.34" y="55" text-anchor="start">4.93s</text>
+          </g><g class="bar-row-g" data-negative="false">
+            <text class="chart-category" x="10" y="114">Show KPI metrics</text>
+            <rect class="chart-bar" x="210.00" y="94" width="478.00" height="28"></rect>
+            <text class="chart-value-label" x="696.00" y="113" text-anchor="start">16.7s</text>
+          </g><g class="bar-row-g" data-negative="false">
+            <text class="chart-category" x="10" y="172">Show the training KPI trend for Malawi</text>
+            <rect class="chart-bar" x="210.00" y="152" width="354.27" height="28"></rect>
+            <text class="chart-value-label" x="572.27" y="171" text-anchor="start">12.3s</text>
+          </g>
+    </svg>
+    <div class="chart-meta"><p>Average warm latency in seconds.</p></div>
+  </div></div>
+      <div class="small-table-wrap"><table><thead><tr><th>Query</th><th>Avg</th><th>Cold</th><th>Rows</th></tr></thead><tbody><tr><td>What is a KPI?</td><td>4.93s</td><td>5.43s</td><td>-</td></tr><tr><td>Show KPI metrics</td><td>16.66s</td><td>21.61s</td><td>6</td></tr><tr><td>Show the training KPI trend for Malawi</td><td>12.35s</td><td>12.39s</td><td>0</td></tr></tbody></table></div>
+    </section>
+    <section class="case-section"><div class="case-section-head"><p class="section-label">Chart Spec</p><h2>Visualization is returned as a small frontend contract.</h2><p class="case-copy">The backend returns a compact chart specification so a web app can render structured answers consistently.</p></div><pre class="code-card">{
+  &quot;chart_type&quot;: &quot;line&quot;,
+  &quot;x_field&quot;: &quot;fiscal_year&quot;,
+  &quot;y_field&quot;: &quot;value&quot;,
+  &quot;series_field&quot;: null,
+  &quot;title&quot;: &quot;Training KPI trend over time&quot;
+}</pre></section>
+      <section class="case-section presentation-section">
+    <div class="case-section-head">
+      <p class="section-label">Associated Presentation</p>
+      <h2>Last Mile Health: LMD 2.0 Agent</h2>
+      <p class="case-copy">Final TGHI presentation covering the LMD 2.0 agent concept, implementation narrative, and project handoff.</p>
+    </div>
+    <div class="presentation-viewer">
+      <div class="presentation-toolbar">
+        <span>16 slides</span>
+        <a class="asset-download-link" href="/project-decks/last-mile-health-final-presentation.pptx" download="last-mile-health-final-presentation.pptx">Download presentation</a>
+      </div>
+      <div class="presentation-stage static-presentation-stage">
+        <figure>
+          <img src="/project-decks/previews/last-mile-health/slide-1.png" alt="Last Mile Health: LMD 2.0 Agent, slide 1 of 16">
+          <figcaption>Slide 1 of 16</figcaption>
+        </figure>
+      </div>
+      <div class="presentation-scrubber">
+        <a href="/project-decks/previews/last-mile-health/slide-1.png" aria-label="Open slide 1"><img src="/project-decks/previews/last-mile-health/slide-1.png" alt=""><span>1</span></a><a href="/project-decks/previews/last-mile-health/slide-2.png" aria-label="Open slide 2"><img src="/project-decks/previews/last-mile-health/slide-2.png" alt=""><span>2</span></a><a href="/project-decks/previews/last-mile-health/slide-3.png" aria-label="Open slide 3"><img src="/project-decks/previews/last-mile-health/slide-3.png" alt=""><span>3</span></a><a href="/project-decks/previews/last-mile-health/slide-4.png" aria-label="Open slide 4"><img src="/project-decks/previews/last-mile-health/slide-4.png" alt=""><span>4</span></a><a href="/project-decks/previews/last-mile-health/slide-5.png" aria-label="Open slide 5"><img src="/project-decks/previews/last-mile-health/slide-5.png" alt=""><span>5</span></a><a href="/project-decks/previews/last-mile-health/slide-6.png" aria-label="Open slide 6"><img src="/project-decks/previews/last-mile-health/slide-6.png" alt=""><span>6</span></a><a href="/project-decks/previews/last-mile-health/slide-7.png" aria-label="Open slide 7"><img src="/project-decks/previews/last-mile-health/slide-7.png" alt=""><span>7</span></a><a href="/project-decks/previews/last-mile-health/slide-8.png" aria-label="Open slide 8"><img src="/project-decks/previews/last-mile-health/slide-8.png" alt=""><span>8</span></a><a href="/project-decks/previews/last-mile-health/slide-9.png" aria-label="Open slide 9"><img src="/project-decks/previews/last-mile-health/slide-9.png" alt=""><span>9</span></a><a href="/project-decks/previews/last-mile-health/slide-10.png" aria-label="Open slide 10"><img src="/project-decks/previews/last-mile-health/slide-10.png" alt=""><span>10</span></a><a href="/project-decks/previews/last-mile-health/slide-11.png" aria-label="Open slide 11"><img src="/project-decks/previews/last-mile-health/slide-11.png" alt=""><span>11</span></a><a href="/project-decks/previews/last-mile-health/slide-12.png" aria-label="Open slide 12"><img src="/project-decks/previews/last-mile-health/slide-12.png" alt=""><span>12</span></a>
+      </div>
+    </div>
+  </section>
+      
+    </main></body>
+</html>
