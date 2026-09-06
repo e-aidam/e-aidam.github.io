@@ -26,8 +26,12 @@
             <a href="mailto:eaidam@college.harvard.edu" class="action-button">Contact</a>
           </div>
         </div>
-        <figure class="hero-visual hero-headshot" aria-label="Portrait of Ethan Aidam">
-          <img src="/home/hero-headshot-sitan.jpg" alt="Ethan Aidam">
+        <figure class="hero-visual hero-headshot hero-antibody-widget" data-antibody-widget data-antibody-state="profile" aria-label="Interactive portrait and antibody particle simulation">
+          <button class="hero-profile-trigger" type="button" data-profile-trigger aria-label="Show antibody particle simulation" aria-expanded="false">
+            <img src="/home/hero-headshot-sitan.jpg" alt="Ethan Aidam">
+          </button>
+          <canvas class="antibody-canvas" data-antibody-canvas role="img" aria-label="Interactive particles assembling into an antibody shape"></canvas>
+          <button class="degrade-antibody-button" type="button" data-degrade-antibody aria-label="Degrade Antibody and restore profile picture">Degrade Antibody</button>
         </figure>
         <div class="hero-note">
           <span>Harvard BA Biomedical Engineering</span>
@@ -204,5 +208,5 @@
           <a href="/resume/Ethan_Aidam_Resume.pdf">Download resume</a>
         </div>
       </footer>
-    </div></body>
+    </div><script src="/assets/hero-antibody.js" defer></script></body>
 </html>
