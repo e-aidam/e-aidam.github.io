@@ -10,6 +10,7 @@
   --red: #c63b34;
   --blue: #245f8f;
   --green: #2f9367;
+  --gutter: clamp(18px, 4.8vw, 64px);
 }
 
 * {
@@ -27,11 +28,19 @@ body {
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  overflow-x: hidden;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 button,
@@ -43,13 +52,15 @@ button {
   cursor: pointer;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .site-shell {
-  width: min(100%, 1440px);
+  width: 100%;
   margin: 0 auto;
   overflow: hidden;
   background: var(--background);
-  border-left: 1px solid rgba(0, 0, 0, 0.08);
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .topbar {
@@ -57,7 +68,7 @@ button {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 20px;
-  padding: 28px clamp(20px, 5vw, 60px);
+  padding: 28px var(--gutter);
 }
 
 .brand-mark,
@@ -76,6 +87,7 @@ button {
   gap: 10px;
   font-size: 14px;
   font-weight: 700;
+  transition: color 180ms ease, transform 180ms ease;
 }
 
 .brand-mark span {
@@ -87,6 +99,7 @@ button {
   color: white;
   background: var(--ink);
   font-size: 10px;
+  transition: transform 180ms ease, background 180ms ease;
 }
 
 .nav-links {
@@ -98,10 +111,20 @@ button {
 
 .nav-links a {
   border-bottom: 1px solid transparent;
+  transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
-.nav-links a:hover {
+.brand-mark:hover,
+.brand-mark:focus-visible,
+.nav-links a:hover,
+.nav-links a:focus-visible {
   border-color: currentColor;
+  transform: translateY(-1px);
+}
+
+.brand-mark:hover span,
+.brand-mark:focus-visible span {
+  transform: scale(1.06);
 }
 
 .small-pill {
@@ -111,6 +134,14 @@ button {
   padding: 0 18px;
   font-size: 13px;
   font-weight: 650;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.small-pill:hover,
+.small-pill:focus-visible {
+  color: white;
+  background: var(--ink);
+  transform: translateY(-1px);
 }
 
 .hero-section {
@@ -123,7 +154,7 @@ button {
     "note visual";
   gap: clamp(18px, 4vw, 58px);
   align-items: start;
-  padding: clamp(22px, 4vw, 48px) clamp(20px, 5vw, 60px) 28px;
+  padding: clamp(22px, 4vw, 48px) var(--gutter) 32px;
   animation: fadeInUp 0.8s ease;
 }
 
@@ -183,11 +214,26 @@ button {
   background: transparent;
   font-size: 13px;
   font-weight: 700;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .action-button-dark {
   color: white;
   background: var(--ink);
+}
+
+.action-button:hover,
+.action-button:focus-visible {
+  border-color: var(--ink);
+  color: white;
+  background: var(--ink);
+  transform: translateY(-2px);
+}
+
+.action-button-dark:hover,
+.action-button-dark:focus-visible {
+  color: var(--ink);
+  background: transparent;
 }
 
 .hero-visual {
@@ -621,7 +667,7 @@ button {
 .about-section,
 .projects-section,
 .experience-section {
-  padding: clamp(58px, 9vw, 120px) clamp(20px, 5vw, 60px);
+  padding: clamp(58px, 9vw, 120px) var(--gutter);
 }
 
 .about-section {
@@ -707,33 +753,45 @@ button {
   background: white;
   color: var(--ink);
   font-size: 15px;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .project-controls input:focus {
   border-color: var(--ink);
+  box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.06);
 }
 
 .filter-row {
   display: flex;
-  gap: 10px;
-  margin: 34px 0 28px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 12px;
+  margin: 36px 0 30px;
+  max-width: 100%;
 }
 
 .filter-row button {
   flex: 0 0 auto;
+  min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0 16px;
+  padding: 0 15px;
   color: #33332e;
   background: white;
   font-size: 13px;
   font-weight: 750;
   white-space: nowrap;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
-.filter-row button.active {
+.filter-row button:hover,
+.filter-row button:focus-visible {
+  border-color: rgba(17, 17, 17, 0.5);
+  transform: translateY(-1px);
+}
+
+.filter-row button.active,
+.filter-row button[aria-pressed="true"] {
   border-color: var(--ink);
   color: white;
   background: var(--ink);
@@ -769,6 +827,7 @@ button {
   padding: 24px;
   text-align: left;
   overflow: hidden;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease, background 200ms ease;
 }
 
 .project-card::before {
@@ -786,8 +845,13 @@ button {
   border-color: var(--ink);
 }
 
+.project-card:hover {
+  transform: translateY(-3px);
+}
+
 .project-card.selected {
   box-shadow: inset 0 0 0 1px var(--ink);
+  background: #fbfbf8;
 }
 
 .accent-red {
@@ -853,6 +917,11 @@ button {
   position: sticky;
   top: 18px;
   padding: 28px;
+  outline: 0;
+}
+
+.project-detail:focus-visible {
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.12);
 }
 
 .project-detail h3 {
@@ -934,6 +1003,14 @@ button {
   color: white;
   background: var(--ink);
   font-weight: 750;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.empty-state button:hover,
+.empty-state button:focus-visible {
+  color: var(--ink);
+  background: white;
+  transform: translateY(-1px);
 }
 
 .experience-section {
@@ -979,8 +1056,9 @@ button {
 .timeline-row strong {
   justify-self: end;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 750;
+  font-size: clamp(15px, 1.45vw, 18px);
+  font-weight: 760;
+  line-height: 1.18;
   white-space: nowrap;
 }
 
@@ -994,59 +1072,8 @@ button {
   border-bottom-color: currentColor;
 }
 
-.timeline-row.tghi-row {
-  align-items: start;
-}
-
 .experience-heading {
   max-width: 860px;
-}
-
-.tghi-event-link {
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  gap: 14px;
-  align-items: center;
-  max-width: 640px;
-  margin-top: 16px;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: inherit;
-  background: rgba(255, 255, 255, 0.62);
-  text-decoration: none;
-  transition: border-color 220ms ease, transform 220ms ease, background 220ms ease;
-}
-
-.tghi-event-link:hover {
-  border-color: rgba(27, 27, 24, 0.28);
-  background: rgba(255, 255, 255, 0.82);
-  transform: translateY(-2px);
-}
-
-.tghi-event-logo {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 6px;
-  background: white;
-}
-
-.tghi-event-link b {
-  display: block;
-  color: var(--ink);
-  font-size: 14px;
-  font-weight: 750;
-}
-
-.tghi-event-link small {
-  display: block;
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.35;
 }
 
 .heatmap-layer-buttons {
@@ -1144,7 +1171,7 @@ button {
 }
 
 .site-footer {
-  padding: clamp(52px, 8vw, 98px) clamp(20px, 5vw, 60px) 34px;
+  padding: clamp(44px, 7vw, 72px) var(--gutter) 24px;
   color: white;
   background: var(--dark);
 }
@@ -1155,43 +1182,92 @@ button {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.site-footer h2 {
-  max-width: 560px;
-  color: white;
+.footer-intro {
+  max-width: 640px;
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(120px, 0.45fr));
-  gap: 28px;
-  align-items: end;
-  margin-top: clamp(60px, 9vw, 120px);
-  padding-top: 32px;
+.footer-intro > p:not(.section-label) {
+  max-width: 520px;
+  margin: 18px 0 0;
+  color: var(--dark-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.footer-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-icon {
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  color: white;
+  border-radius: 50%;
+  transition: transform 180ms ease, color 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.contact-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  fill: currentColor;
+}
+
+.contact-icon:hover,
+.contact-icon:focus-visible {
+  color: var(--ink);
+  background: white;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.footer-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: clamp(36px, 7vw, 72px);
+  padding-top: 22px;
   border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.footer-grid strong {
-  display: block;
-  font-size: 22px;
+.footer-brand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
 }
 
-.footer-grid p {
-  max-width: 420px;
-  margin: 12px 0 0;
+.footer-brand span {
   color: var(--dark-muted);
   font-size: 13px;
-  line-height: 1.5;
-}
-
-.footer-grid a {
-  color: white;
-  font-size: 14px;
   font-weight: 750;
-  overflow-wrap: anywhere;
 }
 
-.footer-grid a:hover {
-  text-decoration: underline;
+.footer-resume-pill {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 0 13px;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.footer-resume-pill:hover,
+.footer-resume-pill:focus-visible {
+  border-color: white;
+  color: var(--ink);
+  background: white;
+  transform: translateY(-1px);
 }
 
 
@@ -1214,8 +1290,7 @@ button {
   .topbar,
   .hero-section,
   .section-grid,
-  .project-layout,
-  .footer-grid {
+  .project-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1278,7 +1353,7 @@ button {
   }
 
   .topbar {
-    padding-top: 18px;
+    padding: 18px var(--gutter) 20px;
   }
 
   .nav-links {
@@ -1322,13 +1397,9 @@ button {
     white-space: normal;
   }
 
-  .tghi-event-link {
-    grid-template-columns: 52px minmax(0, 1fr);
-  }
-
-  .tghi-event-logo {
-    width: 52px;
-    height: 52px;
+  .footer-strip {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
@@ -1391,6 +1462,7 @@ button {
   font-size: 13px;
   font-weight: 800;
   text-decoration: none;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .project-case-link {
@@ -1403,6 +1475,7 @@ button {
   border-color: var(--ink);
   background: var(--ink);
   color: white;
+  transform: translateY(-1px);
 }
 
 .detail-actions {
@@ -1421,9 +1494,11 @@ button {
 .case-hero {
   display: grid;
   gap: 22px;
-  padding: clamp(24px, 5vw, 56px) clamp(20px, 6vw, 72px) clamp(44px, 7vw, 82px);
+  padding: clamp(28px, 5vw, 58px) var(--gutter) clamp(46px, 7vw, 84px);
   border-bottom: 1px solid var(--line);
-  background: white;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 241, 237, 0.82)),
+    white;
 }
 
 .case-hero nav {
@@ -1438,10 +1513,13 @@ button {
   font-size: 13px;
   font-weight: 800;
   text-decoration: none;
+  transition: color 180ms ease, transform 180ms ease;
 }
 
-.case-hero nav a:hover {
+.case-hero nav a:hover,
+.case-hero nav a:focus-visible {
   color: var(--ink);
+  transform: translateY(-1px);
 }
 
 .case-hero h1 {
@@ -1531,7 +1609,7 @@ button {
 }
 
 .case-section {
-  padding: clamp(36px, 6vw, 72px) clamp(20px, 6vw, 72px);
+  padding: clamp(42px, 6.5vw, 78px) var(--gutter);
   border-bottom: 1px solid var(--line);
 }
 
@@ -1557,9 +1635,22 @@ button {
   align-items: start;
 }
 
+.case-two-col > *,
+.case-section-head,
+.chart-frame,
+.small-table-wrap {
+  min-width: 0;
+}
+
 .thought-row {
   border-top: 1px solid var(--line);
   padding: 18px 0;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.thought-row:hover {
+  border-color: rgba(17, 17, 17, 0.28);
+  transform: translateY(-1px);
 }
 
 .thought-row strong {
@@ -1581,12 +1672,18 @@ button {
   border-radius: 8px;
   overflow: hidden;
   background: white;
+  box-shadow: 0 18px 48px rgba(34, 34, 30, 0.06);
 }
 
 .workflow-strip article {
   min-height: 190px;
   border-right: 1px solid var(--line);
   padding: 22px;
+  transition: background 180ms ease;
+}
+
+.workflow-strip article:hover {
+  background: #fbfbf8;
 }
 
 .workflow-strip article:last-child {
@@ -1691,6 +1788,7 @@ button {
 }
 
 .small-table-wrap {
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -2082,12 +2180,15 @@ button {
   border-radius: 8px;
   background: white;
   overflow: hidden;
+  box-shadow: 0 20px 60px rgba(34, 34, 30, 0.08);
 }
 
 .presentation-toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   border-bottom: 1px solid var(--line);
   padding: 18px 20px;
 }
@@ -2113,6 +2214,7 @@ button {
   font-size: 13px;
   font-weight: 850;
   text-decoration: none;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
 .asset-download-link:hover,
@@ -2121,28 +2223,35 @@ button {
   color: white;
   background: var(--ink);
   outline: none;
+  transform: translateY(-1px);
 }
 
-.presentation-stage button {
+.presentation-stage button,
+.presentation-nav-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
+  min-height: 42px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0 14px;
+  padding: 0 16px;
   color: var(--ink);
-  background: #f8f8f4;
+  background: white;
   font-size: 13px;
   font-weight: 850;
+  white-space: nowrap;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease, opacity 180ms ease;
 }
 
 .presentation-stage button:hover:not(:disabled),
-.presentation-stage button:focus-visible {
+.presentation-stage button:focus-visible,
+.presentation-nav-button:hover:not(:disabled),
+.presentation-nav-button:focus-visible {
   border-color: var(--ink);
   color: white;
   background: var(--ink);
   outline: none;
+  transform: translateY(-1px);
 }
 
 .presentation-stage {
@@ -2154,9 +2263,24 @@ button {
   background: #f8f8f4;
 }
 
-.presentation-stage button:disabled {
+.interactive-presentation-stage {
+  grid-template-columns: repeat(2, minmax(150px, max-content));
+  grid-template-areas:
+    "slide slide"
+    "previous next";
+  justify-content: center;
+}
+
+.presentation-stage:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -6px;
+}
+
+.presentation-stage button:disabled,
+.presentation-nav-button:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.42;
+  transform: none;
 }
 
 .presentation-stage figure {
@@ -2183,7 +2307,8 @@ button {
   object-fit: contain;
 }
 
-.report-viewer .presentation-scrubber button {
+.report-viewer .presentation-scrubber button,
+.report-viewer .presentation-scrubber a {
   flex-basis: 72px;
 }
 
@@ -2197,14 +2322,16 @@ button {
 
 .presentation-scrubber {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
   border-top: 1px solid var(--line);
-  padding: 12px;
+  padding: 14px;
   background: white;
+  scroll-padding: 14px;
 }
 
-.presentation-scrubber button {
+.presentation-scrubber button,
+.presentation-scrubber a {
   position: relative;
   flex: 0 0 94px;
   border: 1px solid var(--line);
@@ -2212,13 +2339,32 @@ button {
   padding: 4px;
   background: #f8f8f4;
   cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .presentation-scrubber button.active,
+.presentation-scrubber a.active,
+.presentation-scrubber a[aria-current="true"],
 .presentation-scrubber button:hover,
-.presentation-scrubber button:focus-visible {
+.presentation-scrubber a:hover,
+.presentation-scrubber button:focus-visible,
+.presentation-scrubber a:focus-visible {
   border-color: var(--ink);
+  background: white;
   outline: none;
+}
+
+.presentation-scrubber button.active,
+.presentation-scrubber a.active,
+.presentation-scrubber a[aria-current="true"] {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.presentation-scrubber button:hover,
+.presentation-scrubber a:hover,
+.presentation-scrubber button:focus-visible,
+.presentation-scrubber a:focus-visible {
+  transform: translateY(-2px);
 }
 
 .presentation-scrubber img {
@@ -2248,8 +2394,7 @@ button {
   .term-grid,
   .lmd-context-grid,
   .lmd-figure-grid,
-  .presentation-toolbar,
-  .presentation-stage {
+  .presentation-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -2291,25 +2436,11 @@ button {
 }
 
 
-.filter-row span {
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0 12px;
-  color: var(--muted);
-  background: #f8f8f4;
-  font-size: 12px;
-  font-weight: 800;
-}
-
 .project-card-button {
   text-decoration: none;
 }
 
 .hero-headshot img,
-.tghi-event-logo,
 .lmd-figure-grid img,
 .project-figure-grid img,
 .presentation-stage img,
@@ -2354,6 +2485,41 @@ button {
   font-size: 11px;
   font-weight: 850;
   text-align: center;
+}
+
+.presentation-prev {
+  grid-area: previous;
+  justify-self: end;
+}
+
+.interactive-presentation-stage figure {
+  grid-area: slide;
+  width: 100%;
+}
+
+.presentation-next {
+  grid-area: next;
+  justify-self: start;
+}
+
+@media (max-width: 760px) {
+  .interactive-presentation-stage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .presentation-nav-button {
+    width: 100%;
+  }
+
+  .presentation-scrubber a,
+  .presentation-scrubber button {
+    flex-basis: 78px;
+  }
+
+  .report-viewer .presentation-scrubber a,
+  .report-viewer .presentation-scrubber button {
+    flex-basis: 64px;
+  }
 }
 
 .project-figure-grid img {

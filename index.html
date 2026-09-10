@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ethan Aidam | Biomedical ML &amp; Health Data Science</title>
   <meta name="description" content="Biomedical ML and health data science portfolio for Ethan Aidam: protein language models, epidemiology, AI systems, and bioinformatics.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body><div class="site-shell">
@@ -53,79 +54,87 @@
             <p class="section-label">Projects</p>
             <h2>Projects from models to deployed data tools.</h2>
           </div>
-          <p class="section-copy">Browse selected work across Python, Pandas, NumPy, Machine Learning, Bioinformatics, R, SQL, LangGraph / LangChain, and more.</p>
+          <div class="project-controls">
+            <label class="search-label" for="project-search">Search portfolio</label>
+            <input id="project-search" type="search" placeholder="Try PyTorch, LangGraph, RNA-seq..." autocomplete="off">
+          </div>
         </div>
-        <div class="filter-row" aria-label="Stack areas">
-          <span>Python</span><span>Pandas</span><span>NumPy</span><span>Machine Learning</span><span>Bioinformatics</span><span>R</span><span>SQL</span><span>LangGraph / LangChain</span><span>AWS Bedrock</span><span>RNA-seq</span><span>GSEA</span><span>DESeq2 / edgeR</span><span>Scikit-Learn</span><span>Bayesian Modeling</span><span>Strava API</span><span>Spotify API</span><span>Geospatial Analytics</span><span>Flask</span><span>Bash</span><span>STAR</span><span>Variant Analysis</span><span>Web Scraping</span>
+        <div class="filter-row" aria-label="Stack filters">
+          <button class="active" type="button" data-filter="All" aria-pressed="true">All</button><button type="button" data-filter="Python" aria-pressed="false">Python</button><button type="button" data-filter="Pandas" aria-pressed="false">Pandas</button><button type="button" data-filter="NumPy" aria-pressed="false">NumPy</button><button type="button" data-filter="Machine Learning" aria-pressed="false">Machine Learning</button><button type="button" data-filter="Bioinformatics" aria-pressed="false">Bioinformatics</button><button type="button" data-filter="R" aria-pressed="false">R</button><button type="button" data-filter="SQL" aria-pressed="false">SQL</button><button type="button" data-filter="LangGraph / LangChain" aria-pressed="false">LangGraph / LangChain</button><button type="button" data-filter="AWS Bedrock" aria-pressed="false">AWS Bedrock</button><button type="button" data-filter="RNA-seq" aria-pressed="false">RNA-seq</button><button type="button" data-filter="GSEA" aria-pressed="false">GSEA</button><button type="button" data-filter="DESeq2 / edgeR" aria-pressed="false">DESeq2 / edgeR</button><button type="button" data-filter="Scikit-Learn" aria-pressed="false">Scikit-Learn</button><button type="button" data-filter="Bayesian Modeling" aria-pressed="false">Bayesian Modeling</button><button type="button" data-filter="Strava API" aria-pressed="false">Strava API</button><button type="button" data-filter="Spotify API" aria-pressed="false">Spotify API</button><button type="button" data-filter="Geospatial Analytics" aria-pressed="false">Geospatial Analytics</button><button type="button" data-filter="Flask" aria-pressed="false">Flask</button><button type="button" data-filter="Bash" aria-pressed="false">Bash</button><button type="button" data-filter="STAR" aria-pressed="false">STAR</button><button type="button" data-filter="Variant Analysis" aria-pressed="false">Variant Analysis</button><button type="button" data-filter="Web Scraping" aria-pressed="false">Web Scraping</button>
         </div>
         <div class="project-layout">
           <div class="project-grid">
-            <article class="project-card accent-red">
-                  <a class="project-card-button" href="/projects/last-mile-health-ai-assistant/">
+            <article class="project-card accent-red selected" data-project-id="last-mile-health-ai-assistant">
+                  <button class="project-card-button" type="button" data-project-id="last-mile-health-ai-assistant" aria-pressed="true">
                     <span class="project-domain">Global health analytics</span>
                     <strong>Last Mile Health KPI Agent</strong>
                     <p>LangGraph multi-agent text-to-SQL system for querying global health KPI data in natural language.</p>
                     <span class="project-result">Reduced repeated response latency from 2-5 minutes to seconds while improving reliability for KPI questions.</span>
                     <span class="project-status">In development</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/last-mile-health-ai-assistant/">View project</a>
-                </article><article class="project-card accent-green">
-                  <a class="project-card-button" href="/projects/hypothermia-gsea/">
+                </article><article class="project-card accent-green" data-project-id="hypothermia-gsea">
+                  <button class="project-card-button" type="button" data-project-id="hypothermia-gsea" aria-pressed="false">
                     <span class="project-domain">RNA-seq bioinformatics</span>
                     <strong>Hypothermia Gene Set Enrichment Analysis</strong>
                     <p>End-to-end RNA-seq and GSEA workflow for whole-blood samples exposed to temperature stress.</p>
                     <span class="project-result">Validated enrichment scores against GSEA Software and identified heat shock and proteostasis pathway enrichment.</span>
                     <span class="project-status">Completed</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/hypothermia-gsea/">View project</a>
-                </article><article class="project-card accent-blue">
-                  <a class="project-card-button" href="/projects/blood-lactate-prediction/">
+                </article><article class="project-card accent-blue" data-project-id="blood-lactate-prediction">
+                  <button class="project-card-button" type="button" data-project-id="blood-lactate-prediction" aria-pressed="false">
                     <span class="project-domain">Physiological machine learning</span>
                     <strong>Blood Lactate Estimation</strong>
                     <p>Ensemble and Bayesian models estimating blood lactate from wearable physiological signals.</p>
                     <span class="project-result">Improved test R2 from 0.40 with baseline linear regression to 0.94.</span>
                     <span class="project-status">Completed</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/blood-lactate-prediction/">View project</a>
-                </article><article class="project-card accent-red">
-                  <a class="project-card-button" href="/projects/sports-prediction-mispricing/">
+                </article><article class="project-card accent-red" data-project-id="sports-prediction-mispricing">
+                  <button class="project-card-button" type="button" data-project-id="sports-prediction-mispricing" aria-pressed="false">
                     <span class="project-domain">Sports market machine learning</span>
                     <strong>Sports Prediction Mispricing</strong>
                     <p>Kalshi NBA prediction-market analysis joined to ESPN win-probability shocks to test whether markets overreact or underreact in game.</p>
                     <span class="project-result">Found that true one-minute overreactions were rare, while sequence models tracked immediate market responses substantially better than tabular baselines.</span>
                     <span class="project-status">Completed</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/sports-prediction-mispricing/">View project</a>
-                </article><article class="project-card accent-orange">
-                  <a class="project-card-button" href="/projects/heatmaps/">
+                </article><article class="project-card accent-orange" data-project-id="heatmaps">
+                  <button class="project-card-button" type="button" data-project-id="heatmaps" aria-pressed="false">
                     <span class="project-domain">Geospatial activity analytics</span>
                     <strong>Heatmaps</strong>
                     <p>Flask and Leaflet.js web app for exploring Strava activities as interactive routes with map themes, geosearch, and activity details.</p>
                     <span class="project-result">Developed a web interface for viewing past Strava activities with route details, activity statistics, customizable map themes, and location search.</span>
                     <span class="project-status">Completed</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/heatmaps/">View project</a>
-                </article><article class="project-card accent-green">
-                  <a class="project-card-button" href="/projects/canine-snp-proj/">
+                </article><article class="project-card accent-green" data-project-id="canine-snp-proj">
+                  <button class="project-card-button" type="button" data-project-id="canine-snp-proj" aria-pressed="false">
                     <span class="project-domain">NGS bioinformatics</span>
                     <strong>Canine SNP Project</strong>
                     <p>Bioinformatics pipeline for identifying SNPs associated with canine degenerative myelopathy from low-coverage whole-genome sequencing data.</p>
                     <span class="project-result">Created a documented pipeline sequence for moving from raw canine whole-genome reads to SNP and gene investigation.</span>
                     <span class="project-status">Completed</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/canine-snp-proj/">View project</a>
-                </article><article class="project-card accent-blue">
-                  <a class="project-card-button" href="/projects/musi-to-spotify/">
+                </article><article class="project-card accent-blue" data-project-id="musi-to-spotify">
+                  <button class="project-card-button" type="button" data-project-id="musi-to-spotify" aria-pressed="false">
                     <span class="project-domain">Playlist automation</span>
                     <strong>Musi to Spotify</strong>
                     <p>Python playlist converter that scrapes dynamically generated Musi playlist URLs and recreates them as Spotify playlists.</p>
                     <span class="project-result">Created a converter for moving playlist content from Musi iOS playlist URLs into Spotify.</span>
                     <span class="project-status">Completed</span>
-                  </a>
+                  </button>
                   <a class="project-case-link" href="/projects/musi-to-spotify/">View project</a>
                 </article>
+            <div class="empty-state" hidden>
+              <strong>No matching projects.</strong>
+              <p>Reset the filters or try another method, stack, or domain.</p>
+              <button type="button" data-reset-filters>Reset filters</button>
+            </div>
           </div>
-          <aside class="project-detail">
+          <aside class="project-detail" id="project-detail" tabindex="-1" aria-live="polite">
             <span class="detail-domain">Global health analytics</span>
             <h3>Last Mile Health KPI Agent</h3>
             <dl>
@@ -190,23 +199,33 @@
                   <span>Executive Director</span>
                   <h3><a href="https://techglobalhealth.org/">Harvard Tech and Global Health Initiative</a></h3>
                   <p>Lead a 50+ member organization delivering technology-driven consulting and research projects for global health partners, including a charity 5k that has raised $10,000+ for cancer research and care.</p>
-                  <a class="tghi-event-link" href="https://techglobalhealth.org/"><img class="tghi-event-logo" src="/tghi-logo.png" alt="Harvard Tech and Global Health Initiative logo"><span><b>Check out TGHI events</b><small>Explore upcoming TGHI events for student-led conversations, workshops, and programs at the intersection of technology and global health.</small></span></a>
                 </div>
                 <strong>Aug 2023 - Present</strong>
               </article>
         </div>
       </section>
       <footer class="site-footer" id="contact">
-        <div>
+        <div class="footer-intro">
           <p class="section-label section-label-dark">Contact</p>
-          <h2>Let's connect.</h2>
+          <p>Biomedical ML and health data science candidate focused on protein language models, epidemiology, AI systems, and bioinformatics.</p>
         </div>
-        <div class="footer-grid">
-          <div><strong>Ethan Aidam</strong><p>Biomedical ML and health data science candidate focused on protein language models, epidemiology, AI systems, and bioinformatics.</p></div>
-          <a href="mailto:eaidam@college.harvard.edu">eaidam@college.harvard.edu</a>
-          <a href="https://linkedin.com/in/ethan-aidam-b113052b3">LinkedIn</a>
-          <a href="/resume/Ethan_Aidam_Resume.pdf">Download resume</a>
+        <div class="footer-strip">
+          <div class="footer-brand">
+            <span>Ethan Aidam</span>
+            <a class="footer-resume-pill" href="/resume/Ethan_Aidam_Resume.pdf" aria-label="Resume">Resume</a>
+          </div>
+          <div class="footer-icons" aria-label="Footer contact links">
+            <a class="contact-icon" href="https://linkedin.com/in/ethan-aidam-b113052b3" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.94 8.98H3.95V20h2.99V8.98ZM5.45 4A1.74 1.74 0 1 0 5.4 7.48 1.74 1.74 0 0 0 5.45 4ZM20.05 13.69c0-3.39-1.81-4.96-4.22-4.96a3.64 3.64 0 0 0-3.28 1.8h-.04V8.98H9.65V20h2.98v-5.45c0-1.44.27-2.83 2.05-2.83s1.78 1.64 1.78 2.92V20h2.98v-6.31h.61Z"/></svg>
+            </a>
+            <a class="contact-icon" href="https://github.com/e-aidam" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4a9.6 9.6 0 0 0-3.04 18.71c.48.09.66-.21.66-.47v-1.68c-2.68.58-3.25-1.15-3.25-1.15-.44-1.11-1.07-1.41-1.07-1.41-.87-.6.07-.59.07-.59.97.07 1.48 1 1.48 1 .86 1.47 2.25 1.04 2.8.8.09-.62.34-1.04.61-1.28-2.14-.24-4.39-1.07-4.39-4.76 0-1.05.38-1.91.99-2.58-.1-.24-.43-1.22.09-2.55 0 0 .81-.26 2.64.99A9.19 9.19 0 0 1 12 7.1c.82 0 1.63.11 2.4.33 1.83-1.25 2.64-.99 2.64-.99.52 1.33.19 2.31.09 2.55.62.67.99 1.53.99 2.58 0 3.7-2.26 4.51-4.41 4.75.35.3.66.89.66 1.79v2.53c0 .26.17.56.67.47A9.6 9.6 0 0 0 12 2.4Z"/></svg>
+            </a>
+            <a class="contact-icon" href="mailto:eaidam@college.harvard.edu" aria-label="Email Ethan Aidam">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.25 5.5h15.5A2.25 2.25 0 0 1 22 7.75v8.5a2.25 2.25 0 0 1-2.25 2.25H4.25A2.25 2.25 0 0 1 2 16.25v-8.5A2.25 2.25 0 0 1 4.25 5.5Zm.15 2 7.6 5.13 7.6-5.13H4.4Zm15.35 9V9.28l-7.28 4.91a.85.85 0 0 1-.94 0L4.25 9.28v7.22h15.5Z"/></svg>
+            </a>
+          </div>
         </div>
       </footer>
-    </div><script src="/assets/hero-antibody.js" defer></script></body>
+    </div><script src="/assets/hero-antibody.js" defer></script><script src="/assets/project-interactions.js" defer></script></body>
 </html>
