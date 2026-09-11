@@ -1,0 +1,23 @@
+{
+  "id": "musi-to-spotify",
+  "githubUrl": "https://github.com/e-aidam/musi-to-spotify",
+  "dataPolicy": "Public repository summary only. No user playlist credentials or private Spotify data are bundled into the portfolio.",
+  "thoughtProcess": [
+    {
+      "title": "Read the Musi playlist source",
+      "body": "Start from a Musi iOS playlist URL whose content is dynamically generated."
+    },
+    {
+      "title": "Extract track records",
+      "body": "Scrape and normalize track information so it is usable outside the Musi page."
+    },
+    {
+      "title": "Match tracks in Spotify",
+      "body": "Use cleaned song metadata to search or map each Musi entry into Spotify."
+    },
+    {
+      "title": "Recreate the playlist",
+      "body": "Automate the transfer so the destination Spotify playlist preserves the original playlist content."
+    }
+  ]
+}

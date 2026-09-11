@@ -645,8 +645,7 @@ button {
   font-weight: 750;
 }
 
-.tag-group span,
-.method-list span {
+.tag-group span {
   flex: 0 0 auto;
   border-radius: 999px;
   padding: 12px 18px;
@@ -674,6 +673,11 @@ button {
   background: #f1f1ed;
 }
 
+.section-grid.about-section h2 {
+  font-size: clamp(28px, 4.2vw, 52px);
+  line-height: 1;
+}
+
 .section-grid h2,
 .site-footer h2 {
   margin: 18px 0 0;
@@ -687,8 +691,8 @@ button {
 .section-copy {
   margin: 46px 0 0;
   color: var(--muted);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: clamp(18px, 1.65vw, 22px);
+  line-height: 1.45;
 }
 
 .metric-grid {
@@ -759,6 +763,18 @@ button {
 .project-controls input:focus {
   border-color: var(--ink);
   box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.06);
+}
+
+.project-controls input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  margin-left: 6px;
+  background-color: #000;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 3.2 12.8 12.8M12.8 3.2 3.2 12.8' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.2 3.2 12.8 12.8M12.8 3.2 3.2 12.8' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  cursor: pointer;
 }
 
 .filter-row {
@@ -938,7 +954,7 @@ button {
   margin: 0;
 }
 
-.project-detail div {
+.project-detail dl div {
   margin: 0;
 }
 
@@ -957,12 +973,10 @@ button {
   line-height: 1.52;
 }
 
-.tag-group,
-.method-list {
+.tag-group {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 24px;
 }
 
 .tag-group span {
@@ -971,10 +985,12 @@ button {
   color: white;
 }
 
-.method-list span {
-  padding: 8px 10px;
-  background: #efefeb;
-  font-size: 12px;
+.project-detail .tag-group {
+  margin-top: 22px;
+}
+
+.project-detail .detail-actions {
+  margin-top: 18px;
 }
 
 .empty-state {
@@ -1024,7 +1040,7 @@ button {
 
 .timeline-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(190px, auto);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
   gap: 24px;
   align-items: center;
   padding: 28px 0;
@@ -1055,10 +1071,10 @@ button {
 
 .timeline-row strong {
   justify-self: end;
-  color: var(--muted);
-  font-size: clamp(15px, 1.45vw, 18px);
-  font-weight: 760;
-  line-height: 1.18;
+  color: var(--ink);
+  font-size: clamp(26px, 3.2vw, 42px);
+  font-weight: 520;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -1836,6 +1852,7 @@ button {
 .case-select {
   width: min(100%, 360px);
   min-height: 40px;
+  margin-top: 6px;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0 12px;
@@ -1877,6 +1894,10 @@ button {
 
 .chart-frame {
   margin-top: 18px;
+}
+
+.project-visualization-enhancement {
+  display: block;
 }
 
 .chart-frame .native-chart,
@@ -1962,7 +1983,6 @@ button {
   opacity: 1;
 }
 
-.bar-row-g[data-active="true"] .chart-category,
 .bar-row-g[data-active="true"] .chart-value-label {
   fill: var(--ink);
   font-weight: 850;
@@ -1994,16 +2014,11 @@ button {
 }
 
 .chart-tick,
-.chart-category,
 .chart-value-label,
 .chart-axis-title {
   fill: var(--muted);
   font-size: 12px;
   font-weight: 750;
-}
-
-.chart-category {
-  fill: var(--ink);
 }
 
 .chart-value-label {
@@ -2581,65 +2596,22 @@ button {
   transition: opacity 0.68s ease;
 }
 
-.degrade-antibody-button {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(16px, 5vw, 28px);
-  z-index: 4;
-  min-height: 38px;
-  max-width: calc(100% - 34px);
-  transform: translate(-50%, 10px);
-  border: 1px solid rgba(177, 247, 230, 0.36);
-  border-radius: 999px;
-  padding: 0 16px;
-  color: #eafff9;
-  background: rgba(4, 11, 15, 0.62);
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(14px);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0;
-  white-space: nowrap;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.42s ease, transform 0.42s ease, border-color 0.24s ease;
-}
-
-.degrade-antibody-button:hover,
-.degrade-antibody-button:focus-visible {
-  border-color: rgba(211, 255, 245, 0.82);
-  outline: none;
-}
-
 .hero-antibody-widget[data-antibody-state="forming"] .hero-profile-trigger,
-.hero-antibody-widget[data-antibody-state="formed"] .hero-profile-trigger,
-.hero-antibody-widget[data-antibody-state="degrading"] .hero-profile-trigger {
+.hero-antibody-widget[data-antibody-state="formed"] .hero-profile-trigger {
   opacity: 0;
   pointer-events: none;
 }
 
 .hero-antibody-widget[data-antibody-state="forming"] .antibody-canvas,
-.hero-antibody-widget[data-antibody-state="formed"] .antibody-canvas,
-.hero-antibody-widget[data-antibody-state="degrading"] .antibody-canvas {
+.hero-antibody-widget[data-antibody-state="formed"] .antibody-canvas {
   opacity: 1;
-}
-
-.hero-antibody-widget[data-antibody-state="formed"] .degrade-antibody-button {
-  opacity: 1;
-  transform: translate(-50%, 0);
   pointer-events: auto;
-}
-
-.hero-antibody-widget[data-antibody-state="degrading"] .degrade-antibody-button {
-  opacity: 0;
-  transform: translate(-50%, 8px);
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-profile-trigger,
-  .antibody-canvas,
-  .degrade-antibody-button {
+  .antibody-canvas {
     transition-duration: 0.001ms;
   }
 }

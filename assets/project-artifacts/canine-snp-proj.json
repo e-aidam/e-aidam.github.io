@@ -1,0 +1,43 @@
+{
+  "id": "canine-snp-proj",
+  "githubUrl": "https://github.com/e-aidam/canine-snp-proj",
+  "dataPolicy": "Public repository summary only. No large NGS data files are bundled into the portfolio.",
+  "thoughtProcess": [
+    {
+      "title": "Start from public sequencing data",
+      "body": "Use SRA accession SRX9665373 and run SRR13233412 as the raw paired-end whole-genome sequencing source."
+    },
+    {
+      "title": "Prepare reads before variant work",
+      "body": "Move raw reads through a preparation step so alignment and SNP search are reproducible."
+    },
+    {
+      "title": "Align and search for variants",
+      "body": "Map the canine reads to a reference genome, then search for SNPs that can be investigated further."
+    },
+    {
+      "title": "Connect variants to genes",
+      "body": "Translate candidate SNPs into gene-level context for canine degenerative myelopathy interpretation."
+    }
+  ],
+  "figures": [
+    {
+      "title": "Broad IGV locus view",
+      "src": "/canine-snp/igv-screenshot-121233.png",
+      "alt": "IGV screenshot showing chromosome 31 from 26,658,238 to 26,660,830 with aligned sorted BAM reads.",
+      "caption": "The broad chromosome 31 window shows where the aligned read pileup sits inside the surrounding reference context. Sparse coverage is expected for low-coverage whole-genome sequencing, so the useful signal is concentrated in the local read stack rather than across the full interval."
+    },
+    {
+      "title": "Candidate read support",
+      "src": "/canine-snp/igv-screenshot-121258.png",
+      "alt": "IGV screenshot zoomed to chromosome 31 from 26,660,134 to 26,660,343 with several aligned reads and colored base mismatches.",
+      "caption": "The tighter window exposes individual reads spanning the candidate region. Colored bases within mostly green aligned reads mark mismatches or base-level differences to inspect before treating a position as a candidate SNP."
+    },
+    {
+      "title": "Base-level variant inspection",
+      "src": "/canine-snp/igv-screenshot-121523.png",
+      "alt": "IGV screenshot zoomed to chromosome 31 from 26,660,287 to 26,660,327 with reference bases and aligned reads visible.",
+      "caption": "At 40 bp resolution, the reference bases are visible above the alignments. The colored mismatches in the read track help identify exact positions that warrant downstream gene lookup and caution against overinterpreting unsupported single-read differences."
+    }
+  ]
+}

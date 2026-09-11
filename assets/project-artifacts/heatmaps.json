@@ -1,0 +1,62 @@
+{
+  "id": "heatmaps",
+  "githubUrl": "https://github.com/e-aidam/Heatmaps",
+  "dataPolicy": "Portfolio-safe project summary only. No private Strava tokens or personal raw activity exports are included.",
+  "thoughtProcess": [
+    {
+      "title": "Start with authorized activity data",
+      "body": "Use the Strava API as the source of activity records so the interface can reflect real workouts without manual file handling."
+    },
+    {
+      "title": "Transform routes for the browser",
+      "body": "Convert activity and route metadata into map-ready structures that a Leaflet.js frontend can render as layers."
+    },
+    {
+      "title": "Design for spatial interpretation",
+      "body": "Prioritize map controls and overlays that help users see repeated routes, high-density areas, and activity behavior patterns."
+    },
+    {
+      "title": "Keep the app lightweight",
+      "body": "Use Flask, HTML, CSS, and JavaScript so the project stays simple to run, inspect, and extend."
+    }
+  ],
+  "workflow": [
+    {
+      "step": "Strava authorization",
+      "detail": "Connect the app to authorized Strava activity records."
+    },
+    {
+      "step": "Activity ingestion",
+      "detail": "Retrieve route and workout metadata for analysis."
+    },
+    {
+      "step": "Geospatial transform",
+      "detail": "Prepare activity points and route data for browser rendering."
+    },
+    {
+      "step": "Flask interface",
+      "detail": "Serve the app views and data endpoints for the frontend."
+    },
+    {
+      "step": "Leaflet rendering",
+      "detail": "Display map layers, heatmap overlays, and route behavior patterns."
+    }
+  ],
+  "layers": [
+    {
+      "layer": "Route density",
+      "detail": "Highlights corridors where repeated activities concentrate across the map.",
+      "intensity": 1.0
+    },
+    {
+      "layer": "Activity starts",
+      "detail": "Emphasizes common starting areas and recurring launch points for activities.",
+      "intensity": 0.72
+    },
+    {
+      "layer": "Behavior patterns",
+      "detail": "Frames the visualization around repeated user movement patterns and spatial habits.",
+      "intensity": 0.86
+    }
+  ]
+}

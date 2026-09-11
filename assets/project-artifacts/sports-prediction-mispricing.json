@@ -1,0 +1,157 @@
+{
+  "id": "sports-prediction-mispricing",
+  "githubUrl": "https://github.com/e-aidam/cs1090b_sports_prediction_mispricing",
+  "dataPolicy": "Public repository summary and rendered report/presentation assets only. Live Kalshi credentials, private keys, and raw API access are not bundled into the portfolio.",
+  "thoughtProcess": [
+    {
+      "title": "Define a market response window",
+      "body": "Use ESPN play-by-play win-probability jumps as event anchors, then inspect Kalshi one-minute prices around each shock."
+    },
+    {
+      "title": "Build leakage-safe sequences",
+      "body": "Group train/test splits by game and represent each shock-market pair as a fixed-length OHLCV sequence so models cannot memorize games across splits."
+    },
+    {
+      "title": "Separate overreaction from slow updating",
+      "body": "Compare the market price move against the win-probability shock to distinguish rare large overreactions from the more common underreaction pattern."
+    },
+    {
+      "title": "Compare tabular and sequence models",
+      "body": "Benchmark logistic and linear baselines against LSTM and Transformer models that can use the full local price path."
+    }
+  ],
+  "overreactionShare": [
+    {
+      "label": "Other sequences",
+      "share": 99.83
+    },
+    {
+      "label": "True 1-min overreaction",
+      "share": 0.17
+    }
+  ],
+  "modelPerformance": [
+    {
+      "model": "Logistic Regression",
+      "balancedAccuracy": 42.7,
+      "accuracy": 44.4
+    },
+    {
+      "model": "HistGradientBoosting",
+      "balancedAccuracy": 50.0,
+      "accuracy": 50.7
+    },
+    {
+      "model": "LSTM",
+      "balancedAccuracy": 82.2,
+      "accuracy": 82.1
+    },
+    {
+      "model": "Transformer",
+      "balancedAccuracy": 79.7,
+      "accuracy": 79.8
+    }
+  ],
+  "eventSequence": [
+    {
+      "minute": -10,
+      "price": 0.74
+    },
+    {
+      "minute": -9,
+      "price": 0.74
+    },
+    {
+      "minute": -8,
+      "price": 0.74
+    },
+    {
+      "minute": -7,
+      "price": 0.74
+    },
+    {
+      "minute": -6,
+      "price": 0.74
+    },
+    {
+      "minute": -5,
+      "price": 0.74
+    },
+    {
+      "minute": -4,
+      "price": 0.74
+    },
+    {
+      "minute": -3,
+      "price": 0.76
+    },
+    {
+      "minute": -2,
+      "price": 0.8
+    },
+    {
+      "minute": -1,
+      "price": 0.79
+    },
+    {
+      "minute": 0,
+      "price": 0.8
+    },
+    {
+      "minute": 1,
+      "price": 0.76
+    },
+    {
+      "minute": 2,
+      "price": 0.66
+    },
+    {
+      "minute": 3,
+      "price": 0.67
+    },
+    {
+      "minute": 4,
+      "price": 0.66
+    },
+    {
+      "minute": 5,
+      "price": 0.67
+    },
+    {
+      "minute": 6,
+      "price": 0.67
+    },
+    {
+      "minute": 7,
+      "price": 0.68
+    },
+    {
+      "minute": 8,
+      "price": 0.69
+    },
+    {
+      "minute": 9,
+      "price": 0.68
+    }
+  ],
+  "figures": [
+    {
+      "title": "Win probability shock vs. market move",
+      "src": "/sports-mispricing/wp-vs-price-mispricing.png",
+      "alt": "Scatter plot comparing ESPN win-probability shocks with Kalshi price changes around NBA events.",
+      "caption": "Most market moves do not scale cleanly with shock size, and true one-minute overreactions are rare."
+    },
+    {
+      "title": "Mispricing classification",
+      "src": "/sports-mispricing/mispricing-classification.png",
+      "alt": "Classification figure distinguishing underreaction, efficient response, and overreaction windows.",
+      "caption": "The labeling frame separates slow updates from genuine overreactions rather than treating every price gap as the same kind of error."
+    },
+    {
+      "title": "Held-out event sequence",
+      "src": "/sports-mispricing/event-model-vs-true.png",
+      "alt": "Line chart comparing model predictions with true post-shock market price for a held-out event.",
+      "caption": "Sequence models track the immediate post-shock price path more closely than tabular baselines."
+    }
+  ]
+}

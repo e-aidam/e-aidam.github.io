@@ -4,13 +4,10 @@
 
   const trigger = widget.querySelector("[data-profile-trigger]");
   const canvas = widget.querySelector("[data-antibody-canvas]");
-  const degradeButton = widget.querySelector("[data-degrade-antibody]");
   const ctx = canvas.getContext("2d", { alpha: true });
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const FORMATION_MS = reducedMotion ? 650 : 2300;
-  const DEGRADATION_MS = reducedMotion ? 520 : 980;
-  const IDLE_FRAME_MS = reducedMotion ? 140 : 36;
   const POINTER_RADIUS = 112;
   const POINTER_RADIUS_SQ = POINTER_RADIUS * POINTER_RADIUS;
   const LINK_DISTANCE_SQ = 34 * 34;
@@ -24,8 +21,6 @@
   let particles = [];
   let pointer = null;
   let startedAt = 0;
-  let degradedAt = 0;
-  let lastFrameAt = 0;
   let isInView = true;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -167,8 +162,6 @@
         vy: 0,
         targetX: target.x,
         targetY: target.y,
-        outX: start.x,
-        outY: start.y,
         delay: reducedMotion ? 0 : (index / count) * 520 + Math.random() * 180,
         phase: Math.random() * Math.PI * 2,
         size: 1.1 + Math.random() * 1.35,
@@ -201,19 +194,10 @@
     frameId = 0;
     if (!canAnimate()) return;
 
-    const idleDelay = state === "formed" ? IDLE_FRAME_MS : 0;
-    if (idleDelay && now - lastFrameAt < idleDelay) {
-      scheduleFrame(idleDelay - (now - lastFrameAt));
-      return;
-    }
-
-    lastFrameAt = now;
-
     const elapsed = now - startedAt;
     const rawProgress = clamp(elapsed / FORMATION_MS, 0, 1);
     const progress = easeOutCubic(rawProgress);
-    const degradationProgress = state === "degrading" ? clamp((now - degradedAt) / DEGRADATION_MS, 0, 1) : 0;
-    const visibleAlpha = state === "degrading" ? 1 - degradationProgress : clamp(rawProgress * 1.35, 0, 1);
+    const visibleAlpha = clamp(rawProgress * 1.35, 0, 1);
 
     ctx.clearRect(0, 0, width, height);
     ctx.globalCompositeOperation = "lighter";
@@ -221,18 +205,13 @@
     for (let i = 0; i < particles.length; i += 1) {
       const particle = particles[i];
       const delayProgress = clamp((elapsed - particle.delay) / FORMATION_MS, 0, 1);
-      const localProgress = state === "degrading" ? 1 : easeOutCubic(delayProgress);
+      const localProgress = easeOutCubic(delayProgress);
       const drift = reducedMotion ? 0 : Math.sin(now * 0.0014 + particle.phase) * 4.2;
       const orbit = reducedMotion ? 0 : Math.cos(now * 0.0009 + particle.phase) * 2.4;
       let targetX = particle.targetX + orbit * (0.35 + progress);
       let targetY = particle.targetY + drift * (0.35 + progress);
 
-      if (state === "degrading") {
-        targetX = particle.outX;
-        targetY = particle.outY;
-      }
-
-      if (pointer && state !== "degrading") {
+      if (pointer) {
         const dx = particle.x - pointer.x;
         const dy = particle.y - pointer.y;
         const distSq = dx * dx + dy * dy;
@@ -244,11 +223,11 @@
         }
       }
 
-      const stiffness = state === "degrading" ? 0.018 : 0.012 + localProgress * 0.018;
+      const stiffness = 0.012 + localProgress * 0.018;
       particle.vx += (targetX - particle.x) * stiffness;
       particle.vy += (targetY - particle.y) * stiffness;
-      particle.vx *= state === "degrading" ? 0.91 : 0.885;
-      particle.vy *= state === "degrading" ? 0.91 : 0.885;
+      particle.vx *= 0.885;
+      particle.vy *= 0.885;
       particle.x += particle.vx;
       particle.y += particle.vy;
 
@@ -256,7 +235,7 @@
       const alpha = particle.alpha * visibleAlpha * clamp(localProgress * 1.35, 0, 1) * twinkle;
       drawParticle(particle, alpha);
 
-      if (!reducedMotion && particle.linkIndex > -1 && localProgress > 0.78 && state !== "degrading") {
+      if (!reducedMotion && particle.linkIndex > -1 && localProgress > 0.78) {
         const next = particles[particle.linkIndex];
         const dx = particle.x - next.x;
         const dy = particle.y - next.y;
@@ -279,14 +258,7 @@
       updateState("formed");
     }
 
-    if (state === "degrading" && degradationProgress >= 1) {
-      ctx.clearRect(0, 0, width, height);
-      updateState("profile");
-      stopLoop();
-      return;
-    }
-
-    scheduleFrame(state === "formed" ? IDLE_FRAME_MS : 0);
+    scheduleFrame();
   }
 
   function startAntibody() {
@@ -294,21 +266,15 @@
     updateState("forming");
     buildParticles();
     startedAt = performance.now();
-    lastFrameAt = 0;
     scheduleFrame();
   }
 
-  function degradeAntibody() {
-    if (state !== "formed" && state !== "forming") return;
-    for (let i = 0; i < particles.length; i += 1) {
-      const target = offscreenPoint();
-      particles[i].outX = target.x;
-      particles[i].outY = target.y;
-    }
-    degradedAt = performance.now();
-    updateState("degrading");
+  function hideAntibody() {
+    if (state === "profile") return;
+    pointer = null;
+    ctx.clearRect(0, 0, width, height);
+    updateState("profile");
     stopLoop();
-    scheduleFrame();
   }
 
   function setPointer(event) {
@@ -317,14 +283,10 @@
       x: event.clientX - rect.left,
       y: event.clientY - rect.top,
     };
-    if (state === "formed") {
-      stopLoop();
-      scheduleFrame();
-    }
   }
 
   trigger.addEventListener("click", startAntibody);
-  degradeButton.addEventListener("click", degradeAntibody);
+  canvas.addEventListener("click", hideAntibody);
   widget.addEventListener("pointermove", setPointer, { passive: true });
   widget.addEventListener("pointerleave", () => {
     pointer = null;
@@ -333,7 +295,6 @@
     if (state === "profile") return;
     buildParticles();
     startedAt = performance.now() - (state === "formed" ? FORMATION_MS : 0);
-    lastFrameAt = 0;
     stopLoop();
     scheduleFrame();
   });

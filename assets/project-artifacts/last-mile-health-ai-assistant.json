@@ -1,0 +1,106 @@
+{
+  "id": "last-mile-health-ai-assistant",
+  "githubUrl": "https://github.com/Last-Mile-Health/lmd-2-agent",
+  "dataPolicy": "Private-safe summary only. No Redshift rows, credentials, or Last Mile Health internal KPI data are included.",
+  "heroMetrics": [
+    {
+      "label": "structured endpoints",
+      "value": "2",
+      "detail": "Portal-compatible chat and agent query routes."
+    },
+    {
+      "label": "benchmark queries",
+      "value": "3",
+      "detail": "Direct help, KPI metric lookup, and Malawi trend request."
+    },
+    {
+      "label": "chart spec types",
+      "value": "3",
+      "detail": "Line, bar, and pie specs supported by the visualization agent."
+    }
+  ],
+  "thoughtProcess": [
+    {
+      "title": "Protect analytical access",
+      "body": "Route natural-language questions through an agent that can inspect schema context without exposing private warehouse data on the portfolio."
+    },
+    {
+      "title": "Constrain SQL generation",
+      "body": "Retrieve relevant schema, validate generated SQL, and use bounded correction when warehouse errors indicate a fixable query issue."
+    },
+    {
+      "title": "Reduce repeated latency",
+      "body": "Cache schema and repeated query context so common KPI questions can move from expensive discovery to faster answer synthesis."
+    },
+    {
+      "title": "Return frontend-ready charts",
+      "body": "When the user asks for a chart, emit a small chart_spec object that any portal charting library can render."
+    }
+  ],
+  "architecture": [
+    {
+      "step": "User question",
+      "detail": "Portal sends message and optional dashboard page context."
+    },
+    {
+      "step": "Master orchestrator",
+      "detail": "Classifies whether database access and visualization are needed."
+    },
+    {
+      "step": "Schema retrieval",
+      "detail": "Searches cached Redshift schema metadata for relevant tables and columns."
+    },
+    {
+      "step": "SQL generation",
+      "detail": "Generates read-only SQL using only verified schema context."
+    },
+    {
+      "step": "Validation + retry",
+      "detail": "Checks SQL safety and retries bounded corrections when appropriate."
+    },
+    {
+      "step": "Result formatter",
+      "detail": "Summarizes query rows and prepares preview-safe response metadata."
+    },
+    {
+      "step": "Visualization agent",
+      "detail": "Builds a minimal chart_spec when the query result is plottable."
+    }
+  ],
+  "benchmarks": [
+    {
+      "query": "What is a KPI?",
+      "avg": 4.926,
+      "min": 4.54,
+      "max": 5.157,
+      "cold": 5.428,
+      "needsDb": false,
+      "rows": null
+    },
+    {
+      "query": "Show KPI metrics",
+      "avg": 16.659,
+      "min": 13.221,
+      "max": 19.756,
+      "cold": 21.605,
+      "needsDb": true,
+      "rows": 6
+    },
+    {
+      "query": "Show the training KPI trend for Malawi",
+      "avg": 12.347,
+      "min": 10.821,
+      "max": 14.436,
+      "cold": 12.39,
+      "needsDb": true,
+      "rows": 0
+    }
+  ],
+  "chartSpecExample": {
+    "chart_type": "line",
+    "x_field": "fiscal_year",
+    "y_field": "value",
+    "series_field": null,
+    "title": "Training KPI trend over time"
+  }
+}

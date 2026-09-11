@@ -21,58 +21,8 @@
         <div><p class="section-label">Project Workflow</p><article class="thought-row"><strong>Define a market response window</strong><p>Use ESPN play-by-play win-probability jumps as event anchors, then inspect Kalshi one-minute prices around each shock.</p></article><article class="thought-row"><strong>Build leakage-safe sequences</strong><p>Group train/test splits by game and represent each shock-market pair as a fixed-length OHLCV sequence so models cannot memorize games across splits.</p></article><article class="thought-row"><strong>Separate overreaction from slow updating</strong><p>Compare the market price move against the win-probability shock to distinguish rare large overreactions from the more common underreaction pattern.</p></article><article class="thought-row"><strong>Compare tabular and sequence models</strong><p>Benchmark logistic and linear baselines against LSTM and Transformer models that can use the full local price path.</p></article></div>
       </section>
       
-    <section class="case-section sports-d3-section">
-      <div class="case-section-head"><p class="section-label">D3 Views</p><h2>Native charts make the market-response results easier to scan.</h2><p class="case-copy">The sharper finding is that true one-minute overreactions are rare, while models that can read the local OHLCV sequence do a much better job predicting immediate direction.</p></div>
-      <div class="case-two-col">
-        <div><p class="section-label">Label Rarity</p><h2>Only a tiny share of sequences meet the strict overreaction rule.</h2><p class="case-copy">The README reports 21 true one-minute overreactions among 12,422 event-market sequences.</p><div class="chart-frame">
-    <svg class="native-chart bar-chart-svg" viewBox="0 0 760 250" role="img" aria-label="Share of all event-market sequences.">
-      <g class="bar-row-g" data-negative="false">
-            <text class="chart-category" x="10" y="56">Other sequences</text>
-            <rect class="chart-bar" x="210.00" y="36" width="478.00" height="28"></rect>
-            <text class="chart-value-label" x="696.00" y="55" text-anchor="start">99.8%</text>
-          </g><g class="bar-row-g" data-negative="false">
-            <text class="chart-category" x="10" y="143">True 1-min overreaction</text>
-            <rect class="chart-bar" x="210.00" y="123" width="2.00" height="28"></rect>
-            <text class="chart-value-label" x="220.00" y="142" text-anchor="start">0.17%</text>
-          </g>
-    </svg>
-    <div class="chart-meta"><p>Share of all event-market sequences.</p></div>
-  </div></div>
-        <div><p class="section-label">Model Comparison</p><h2>Sequence models outperform tabular baselines on direction.</h2><p class="case-copy">Balanced accuracy controls for the up, flat, and down classes.</p><div class="chart-frame">
-    <svg class="native-chart bar-chart-svg" viewBox="0 0 760 268" role="img" aria-label="Held-out balanced accuracy by direction model.">
-      <g class="bar-row-g" data-negative="false">
-            <text class="chart-category" x="10" y="56">Logistic Regression</text>
-            <rect class="chart-bar" x="210.00" y="36" width="248.30" height="28"></rect>
-            <text class="chart-value-label" x="466.30" y="55" text-anchor="start">42.7%</text>
-          </g><g class="bar-row-g" data-negative="false">
-            <text class="chart-category" x="10" y="104">HistGradientBoosting</text>
-            <rect class="chart-bar" x="210.00" y="84" width="290.75" height="28"></rect>
-            <text class="chart-value-label" x="508.75" y="103" text-anchor="start">50.0%</text>
-          </g><g class="bar-row-g" data-negative="false">
-            <text class="chart-category" x="10" y="152">LSTM</text>
-            <rect class="chart-bar" x="210.00" y="132" width="478.00" height="28"></rect>
-            <text class="chart-value-label" x="696.00" y="151" text-anchor="start">82.2%</text>
-          </g><g class="bar-row-g" data-negative="false">
-            <text class="chart-category" x="10" y="200">Transformer</text>
-            <rect class="chart-bar" x="210.00" y="180" width="463.46" height="28"></rect>
-            <text class="chart-value-label" x="681.46" y="199" text-anchor="start">79.7%</text>
-          </g>
-    </svg>
-    <div class="chart-meta"><p>Held-out balanced accuracy by direction model.</p></div>
-  </div></div>
-      </div>
-    </section>
-    <section class="case-section"><div class="case-section-head"><p class="section-label">Event Window</p><h2>A 20-minute price path anchors each shock.</h2><p class="case-copy">The example shows ten minutes before the play, the event minute, and the immediate post-shock response.</p></div><div class="chart-frame">
-    <svg class="native-chart interactive-chart" viewBox="0 0 760 320" role="img" aria-label="Kalshi yes-price around a win-probability shock.">
-      <line class="chart-axis" x1="58" y1="266" x2="728" y2="266"></line>
-      <line class="chart-axis" x1="58" y1="28" x2="58" y2="266"></line>
-      <path class="line-path" d="M 58.00 130.00 L 93.26 130.00 L 128.53 130.00 L 163.79 130.00 L 199.05 130.00 L 234.32 130.00 L 269.58 130.00 L 304.84 96.00 L 340.11 28.00 L 375.37 45.00 L 410.63 28.00 L 445.89 96.00 L 481.16 266.00 L 516.42 249.00 L 551.68 266.00 L 586.95 249.00 L 622.21 249.00 L 657.47 232.00 L 692.74 215.00 L 728.00 232.00" stroke="#245f8f"></path>
-      <circle class="scatter-point" cx="58.00" cy="130.00" r="3"></circle><circle class="scatter-point" cx="93.26" cy="130.00" r="3"></circle><circle class="scatter-point" cx="128.53" cy="130.00" r="3"></circle><circle class="scatter-point" cx="163.79" cy="130.00" r="3"></circle><circle class="scatter-point" cx="199.05" cy="130.00" r="3"></circle><circle class="scatter-point" cx="234.32" cy="130.00" r="3"></circle><circle class="scatter-point" cx="269.58" cy="130.00" r="3"></circle><circle class="scatter-point" cx="304.84" cy="96.00" r="3"></circle><circle class="scatter-point" cx="340.11" cy="28.00" r="3"></circle><circle class="scatter-point" cx="375.37" cy="45.00" r="3"></circle><circle class="scatter-point" cx="410.63" cy="28.00" r="3"></circle><circle class="scatter-point" cx="445.89" cy="96.00" r="3"></circle><circle class="scatter-point" cx="481.16" cy="266.00" r="3"></circle><circle class="scatter-point" cx="516.42" cy="249.00" r="3"></circle><circle class="scatter-point" cx="551.68" cy="266.00" r="3"></circle><circle class="scatter-point" cx="586.95" cy="249.00" r="3"></circle><circle class="scatter-point" cx="622.21" cy="249.00" r="3"></circle><circle class="scatter-point" cx="657.47" cy="232.00" r="3"></circle><circle class="scatter-point" cx="692.74" cy="215.00" r="3"></circle><circle class="scatter-point" cx="728.00" cy="232.00" r="3"></circle>
-      <text class="chart-axis-title" x="58" y="312">minute</text>
-      <text class="chart-axis-title" x="58" y="16">price</text>
-    </svg>
-    <div class="chart-meta"><p>Kalshi yes-price around a win-probability shock.</p></div>
-  </div></section><section class="case-section project-figure-section">
+    <div class="project-visualization-enhancement" data-project-visualizations="sports-prediction-mispricing" data-artifact="/assets/project-artifacts/sports-prediction-mispricing.json" hidden></div>
+    <section class="case-section project-figure-section">
     <div class="case-section-head">
       <p class="section-label">Figures</p>
       <h2>Selected outputs from the analysis.</h2>
@@ -135,5 +85,5 @@
       </div>
     </div>
   </section>
-    </main><script src="/assets/presentation-interactions.js" defer></script></body>
+    </main><script src="/assets/vendor/d3.v7.min.js" defer></script><script src="/assets/project-visualizations.js?v=2" defer></script><script src="/assets/presentation-interactions.js" defer></script></body>
 </html>

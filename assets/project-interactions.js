@@ -18,20 +18,20 @@
       githubUrl: "https://github.com/Last-Mile-Health/lmd-2-agent",
     },
     {
-      id: "hypothermia-gsea",
-      title: "Hypothermia Gene Set Enrichment Analysis",
+      id: "hyperthermia-gsea",
+      title: "Hyperthermia Gene Set Enrichment Analysis",
       domain: "RNA-seq bioinformatics",
       summary:
         "End-to-end RNA-seq and GSEA workflow for whole-blood samples exposed to temperature stress.",
       problem:
-        "Whole-blood expression data needed a reproducible analysis path from alignment through pathway-level interpretation.",
+        "Researchers were interested in whether heat exposure therapy enriches expression of hormonal gene pathways that could help to treat depression.",
       approach:
         "Built a Bash and R pipeline with STAR, DESeq2, edgeR, and a from-scratch GSEA implementation including permutation testing, empirical p-values, and FDR correction.",
       stack: ["R", "Bioinformatics", "RNA-seq", "GSEA", "DESeq2 / edgeR", "STAR", "Bash"],
       methods: ["RNA-seq", "GSEA", "Permutation testing", "FDR correction"],
       result:
         "Validated enrichment scores against GSEA Software and identified heat shock and proteostasis pathway enrichment.",
-      route: "/projects/hypothermia-gsea/",
+      route: "/projects/hyperthermia-gsea/",
       githubUrl: "https://github.com/e-aidam/stat114_gsea_proj",
     },
     {
@@ -41,12 +41,13 @@
       summary:
         "Ensemble and Bayesian models estimating blood lactate from wearable physiological signals.",
       problem:
-        "Athletes and clinicians need lower-friction ways to infer metabolic state without relying on frequent invasive measurements.",
+        "Endurance athletes and clinicians need a less invasive way to accurately assess fatigue during exercise than taking blood lactate samples.",
       approach:
         "Compared Random Forest, Gradient Boosting, and Mixture of Experts models, then built a PyMC hierarchical model with day-varying intercepts and oxygen-saturation slopes.",
       stack: ["Python", "Pandas", "NumPy", "Machine Learning", "Scikit-Learn", "Bayesian Modeling"],
       methods: ["Random forest", "Gradient boosting", "Bayesian modeling", "Uncertainty estimation"],
-      result: "Improved test R2 from 0.40 with baseline linear regression to 0.94.",
+      result:
+        "Achieved 0.92 R2 in blood lactate prediction using ensemble machine learning models",
       route: "/projects/blood-lactate-prediction/",
       githubUrl: "https://github.com/DavidStryder/CS109A---Final-Project-Blood-Lactate-Analysis",
     },
@@ -59,11 +60,11 @@
       problem:
         "NBA prediction markets can move quickly after major in-game win-probability swings, but it is unclear whether those moves systematically overreact to new information or update too slowly.",
       approach:
-        "Joined Kalshi one-minute OHLCV market candles with ESPN NBA play-by-play win-probability shocks, built leakage-safe game-grouped train/test splits, and compared tabular baselines against LSTM and Transformer sequence models.",
+        "Joined Kalshi one-minute OHLCV market candles with ESPN NBA play-by-play win-probability shocks, built leakage-safe game-grouped train/test splits, and compared traditional ML baselines against LSTM and Transformer sequence models.",
       stack: ["Python", "Pandas", "NumPy", "Machine Learning", "Scikit-Learn"],
       methods: ["Sequence modeling", "Time-series classification", "Market mispricing analysis", "Cross-validation"],
       result:
-        "Found that true one-minute overreactions were rare, while sequence models tracked immediate market responses substantially better than tabular baselines.",
+        "Found that true one-minute overreactions were rare, while sequence models tracked immediate market responses substantially better than traditional ML baselines.",
       route: "/projects/sports-prediction-mispricing/",
       githubUrl: "https://github.com/e-aidam/cs1090b_sports_prediction_mispricing",
     },
@@ -91,13 +92,13 @@
       summary:
         "Bioinformatics pipeline for identifying SNPs associated with canine degenerative myelopathy from low-coverage whole-genome sequencing data.",
       problem:
-        "Canine degenerative myelopathy has genetic risk factors, but NGS data needs a reproducible path from raw SRA reads to candidate SNPs and gene-level interpretation.",
+        "Researchers need to identify genetic variants associated with canine degenerative myelopathy from whole-genome sequencing data.",
       approach:
-        "Built a pipeline around SRA read acquisition, data preparation, reference genome alignment, SNP search, and gene identification using paired-end Canis lupus familiaris sequencing data from SRX9665373.",
+        "Built a bioinformatics pipeline to process raw canine sequencing data, align SRA reads to a reference genome, identify candidate SNPs, and map variants to genes.",
       stack: ["Bioinformatics", "Bash", "Variant Analysis"],
       methods: ["Raw read acquisition", "Reference alignment", "Variant discovery", "Gene lookup"],
       result:
-        "Created a documented pipeline sequence for moving from raw canine whole-genome reads to SNP and gene investigation.",
+        "Created a reproducible workflow for investigating disease-associated genetic variants in canine genomic data.",
       route: "/projects/canine-snp-proj/",
       githubUrl: "https://github.com/e-aidam/canine-snp-proj",
     },
@@ -185,7 +186,6 @@
         <div><dt>Result</dt><dd>${escapeHtml(project.result)}</dd></div>
       </dl>
       <div class="tag-group" aria-label="Project stack">${renderPills(project.stack)}</div>
-      <div class="method-list" aria-label="Methods">${renderPills(project.methods)}</div>
       <div class="detail-actions">
         <a href="${escapeHtml(project.route)}">View project</a>
         <a href="${escapeHtml(project.githubUrl)}">GitHub</a>

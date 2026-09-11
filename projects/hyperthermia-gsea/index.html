@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hyperthermia Gene Set Enrichment Analysis | Ethan Aidam</title>
+  <meta name="description" content="End-to-end RNA-seq and GSEA workflow for whole-blood samples exposed to temperature stress.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body><main class="case-page">
+      <header class="case-hero">
+        <nav><a href="/">Ethan Aidam</a><a href="/#projects">Projects</a><a href="https://github.com/e-aidam/stat114_gsea_proj">GitHub</a></nav>
+        <p class="eyebrow">RNA-seq bioinformatics</p>
+        <h1>Hyperthermia Gene Set Enrichment Analysis</h1>
+        <p>End-to-end RNA-seq and GSEA workflow for whole-blood samples exposed to temperature stress.</p>
+        <div class="case-actions"><a href="https://github.com/e-aidam/stat114_gsea_proj">View GitHub</a><a href="/#projects">Back to portfolio</a></div>
+      </header>
+      <section class="case-section case-two-col">
+        <div><p class="section-label">Background</p><h2>Researchers were interested in whether heat exposure therapy enriches expression of hormonal gene pathways that could help to treat depression.</h2><p class="case-copy">Gene Set Enrichment Analysis asks whether groups of biologically related genes cluster near the top or bottom of a ranked differential-expression list. Instead of interpreting thousands of genes one at a time, the analysis moves up to pathways and cellular programs.</p><p class="case-copy">The important reading move is to compare direction, magnitude, and uncertainty: which pathways have positive or negative normalized enrichment, where the running-score curve peaks, and whether the adjusted p-value supports a confident interpretation.</p></div>
+        <div><p class="section-label">Project Workflow</p><article class="thought-row"><strong>Start from raw counts</strong><p>Use STAR-derived gene counts as the common substrate for filtering, identifier mapping, and differential expression.</p></article><article class="thought-row"><strong>Rank genes by treatment contrast</strong><p>Use DESeq2 log2 fold change for WBH versus sham to create the ordered list consumed by the custom GSEA statistic.</p></article><article class="thought-row"><strong>Implement GSEA manually</strong><p>Walk down the ranked list, increasing the running score on gene-set hits and penalizing misses to find the maximum enrichment deviation.</p></article><article class="thought-row"><strong>Stress-test significance</strong><p>Use phenotype-label permutations to estimate NES and p-values, then compare trends to Broad GSEA results.</p></article></div>
+      </section>
+      
+    <section class="case-section">
+      <div class="case-section-head"><p class="section-label">Pipeline</p><h2>From sequencing reads to pathway scores.</h2><p class="case-copy">The analysis moves from count data to ranked treatment contrasts, then asks whether predefined gene sets appear unusually early or late in that ranked list.</p></div>
+      <div class="workflow-strip"><article>
+        <span>01</span>
+        <strong>FASTQ</strong>
+        <p>Download paired sequencing files by SRR accession.</p>
+      </article><article>
+        <span>02</span>
+        <strong>QC</strong>
+        <p>Run FastQC to inspect read quality before alignment.</p>
+      </article><article>
+        <span>03</span>
+        <strong>STAR</strong>
+        <p>Align reads and produce gene-level count outputs.</p>
+      </article><article>
+        <span>04</span>
+        <strong>DESeq2</strong>
+        <p>Model WBH versus sham and rank genes by log2 fold change.</p>
+      </article><article>
+        <span>05</span>
+        <strong>Custom GSEA</strong>
+        <p>Compute running ES, NES, empirical p-values, and adjusted p-values.</p>
+      </article><article>
+        <span>06</span>
+        <strong>Broad GSEA</strong>
+        <p>Compare custom results with preranked desktop analyses.</p>
+      </article></div>
+    </section>
+    <section class="case-section"><div class="case-section-head"><p class="section-label">Metric Definition</p><h2>NES means normalized enrichment score.</h2><p class="case-copy">The normalized enrichment score rescales a pathway's raw enrichment score against a permutation-based null distribution. That normalization makes gene sets with different sizes easier to compare, while the sign still shows which end of the ranked contrast contains the pathway genes.</p></div></section>
+    <div class="project-visualization-enhancement" data-project-visualizations="hyperthermia-gsea" data-artifact="/assets/project-artifacts/hyperthermia-gsea.json" hidden></div>
+      <section class="case-section presentation-section">
+    <div class="case-section-head">
+      <p class="section-label">Associated Presentation</p>
+      <h2>STAT 114 Hyperthermia GSEA Final Project</h2>
+      <p class="case-copy">Final presentation for the RNA-seq and gene set enrichment analysis project, including workflow and biological interpretation.</p>
+    </div>
+    <div class="presentation-viewer">
+      <div class="presentation-toolbar">
+        <span>30 slides</span>
+        <a class="asset-download-link" href="/project-decks/hyperthermia-gsea-final-project.pptx" download="hyperthermia-gsea-final-project.pptx">Download presentation</a>
+      </div>
+      <div class="presentation-stage static-presentation-stage">
+        <figure>
+          <img src="/project-decks/previews/hyperthermia-gsea/slide-1.png" alt="STAT 114 Hyperthermia GSEA Final Project, slide 1 of 30">
+          <figcaption>Slide 1 of 30</figcaption>
+        </figure>
+      </div>
+      <div class="presentation-scrubber">
+        <a href="/project-decks/previews/hyperthermia-gsea/slide-1.png" aria-label="Open slide 1"><img src="/project-decks/previews/hyperthermia-gsea/slide-1.png" alt=""><span>1</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-2.png" aria-label="Open slide 2"><img src="/project-decks/previews/hyperthermia-gsea/slide-2.png" alt=""><span>2</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-3.png" aria-label="Open slide 3"><img src="/project-decks/previews/hyperthermia-gsea/slide-3.png" alt=""><span>3</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-4.png" aria-label="Open slide 4"><img src="/project-decks/previews/hyperthermia-gsea/slide-4.png" alt=""><span>4</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-5.png" aria-label="Open slide 5"><img src="/project-decks/previews/hyperthermia-gsea/slide-5.png" alt=""><span>5</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-6.png" aria-label="Open slide 6"><img src="/project-decks/previews/hyperthermia-gsea/slide-6.png" alt=""><span>6</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-7.png" aria-label="Open slide 7"><img src="/project-decks/previews/hyperthermia-gsea/slide-7.png" alt=""><span>7</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-8.png" aria-label="Open slide 8"><img src="/project-decks/previews/hyperthermia-gsea/slide-8.png" alt=""><span>8</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-9.png" aria-label="Open slide 9"><img src="/project-decks/previews/hyperthermia-gsea/slide-9.png" alt=""><span>9</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-10.png" aria-label="Open slide 10"><img src="/project-decks/previews/hyperthermia-gsea/slide-10.png" alt=""><span>10</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-11.png" aria-label="Open slide 11"><img src="/project-decks/previews/hyperthermia-gsea/slide-11.png" alt=""><span>11</span></a><a href="/project-decks/previews/hyperthermia-gsea/slide-12.png" aria-label="Open slide 12"><img src="/project-decks/previews/hyperthermia-gsea/slide-12.png" alt=""><span>12</span></a>
+      </div>
+    </div>
+  </section>
+      
+    </main><script src="/assets/vendor/d3.v7.min.js" defer></script><script src="/assets/project-visualizations.js?v=2" defer></script><script src="/assets/presentation-interactions.js" defer></script></body>
+</html>
