@@ -48,6 +48,7 @@
       "pathway": "Heat Shock Proteostasis",
       "es": 0.215,
       "nes": 1.103,
+      "pvalue": 0.307,
       "padj": 0.844,
       "genes": 293,
       "peakRank": 8000,
@@ -542,7 +543,8 @@
     {
       "pathway": "Interferon Signaling",
       "es": -0.153,
-      "nes": -0.72,
+      "nes": -0.638,
+      "pvalue": 0.858,
       "padj": 0.91,
       "genes": 374,
       "peakRank": 1800,
@@ -1037,7 +1039,8 @@
     {
       "pathway": "Serotonin",
       "es": -0.463,
-      "nes": -0.96,
+      "nes": -0.958,
+      "pvalue": 0.633,
       "padj": 0.91,
       "genes": 46,
       "peakRank": 900,
@@ -1532,7 +1535,8 @@
     {
       "pathway": "Dopamine",
       "es": -0.541,
-      "nes": -1.02,
+      "nes": -1.017,
+      "pvalue": 0.527,
       "padj": 0.91,
       "genes": 131,
       "peakRank": 1200,

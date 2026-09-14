@@ -10,7 +10,7 @@
 </head>
 <body><div class="site-shell">
       <header class="topbar" aria-label="Primary navigation">
-    <a class="brand-mark" href="/#top" aria-label="Ethan Aidam home"><span>EA</span>Ethan Aidam</a>
+    <a class="brand-mark" href="/#top" aria-label="Ethan Aidam home"><span>∃∀</span>Ethan Aidam</a>
     <nav class="nav-links" aria-label="Portfolio sections">
       <a href="/#projects">Projects</a>
       <a href="/#experience">Experience</a>
@@ -31,6 +31,7 @@
             <img src="/home/hero-headshot-sitan.jpg" alt="Ethan Aidam">
           </button>
           <canvas class="antibody-canvas" data-antibody-canvas role="img" aria-label="Interactive particles assembling into an antibody shape"></canvas>
+          <button class="degrade-antibody-button" type="button" data-degrade-antibody aria-label="Hide antibody and restore profile picture">Degrade Antibody</button>
         </figure>
         <div class="hero-note">
           <span>Harvard BA Biomedical Engineering</span>
@@ -67,7 +68,7 @@
                     <span class="project-domain">Global health analytics</span>
                     <strong>Last Mile Health KPI Agent</strong>
                     <p>LangGraph multi-agent text-to-SQL system for querying global health KPI data in natural language.</p>
-                    <span class="project-result">Reduced repeated response latency from 2-5 minutes to seconds while improving reliability for KPI questions.</span>
+                    <span class="project-result">Reduced repeated response latency from 1-2 minutes to seconds while improving reliability for KPI questions.</span>
                     <span class="project-status">In development</span>
                   </button>
                   <a class="project-case-link" href="/projects/last-mile-health-ai-assistant/">View project</a>
@@ -93,7 +94,7 @@
                   <button class="project-card-button" type="button" data-project-id="sports-prediction-mispricing" aria-pressed="false">
                     <span class="project-domain">Sports market machine learning</span>
                     <strong>Sports Prediction Mispricing</strong>
-                    <p>Kalshi NBA prediction-market analysis joined to ESPN win-probability shocks to test whether markets overreact or underreact in game.</p>
+                    <p>Machine learning and time-series models analyzing how NBA prediction markets respond to major in-game win-probability shocks.</p>
                     <span class="project-result">Found that true one-minute overreactions were rare, while sequence models tracked immediate market responses substantially better than traditional ML baselines.</span>
                     <span class="project-status">Completed</span>
                   </button>
@@ -133,17 +134,18 @@
             </div>
           </div>
           <aside class="project-detail" id="project-detail" tabindex="-1" aria-live="polite">
+            <div class="detail-thumb"><img src="/home/thumbnails/last-mile-health-ai-assistant.jpg" alt="A community health worker vaccinates an infant held by their mother at a village clinic." decoding="async"></div>
             <span class="detail-domain">Global health analytics</span>
             <h3>Last Mile Health KPI Agent</h3>
             <dl>
-              <div><dt>Problem</dt><dd>Program teams needed a faster way to retrieve community health worker training and operations metrics without hand-writing Redshift SQL for each analytical question.</dd></div>
-              <div><dt>Approach</dt><dd>Built a LangGraph and LangChain workflow with schema-aware retrieval, bounded retry logic, AWS Bedrock generation, and PostgreSQL query caching.</dd></div>
-              <div><dt>Result</dt><dd>Reduced repeated response latency from 2-5 minutes to seconds while improving reliability for KPI questions.</dd></div>
+              <div><dt>Problem</dt><dd>Last Mile Health needed a faster way to retrieve community health worker training and operations data without hand-writing SQL for each analytical question.</dd></div>
+              <div><dt>Approach</dt><dd>Built a LangGraph and LangChain workflow with schema-aware retrieval, bounded retry logic, and PostgreSQL query caching.</dd></div>
+              <div><dt>Result</dt><dd>Reduced repeated response latency from 1-2 minutes to seconds while improving reliability for KPI questions.</dd></div>
             </dl>
             <div class="tag-group"><span>Python</span><span>SQL</span><span>LangGraph / LangChain</span><span>AWS Bedrock</span></div>
             <div class="detail-actions">
               <a href="/projects/last-mile-health-ai-assistant/">View project</a>
-              <a href="https://github.com/Last-Mile-Health/lmd-2-agent">GitHub</a>
+              <span>Closed Source</span>
             </div>
           </aside>
         </div>

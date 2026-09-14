@@ -8,28 +8,29 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
-<body><main class="case-page">
+<body><main class="case-page lmd-case-page">
       <header class="case-hero">
         <nav><a href="/">Ethan Aidam</a><a href="/#projects">Projects</a><a href="https://github.com/Last-Mile-Health/lmd-2-agent">GitHub</a></nav>
         <p class="eyebrow">Global health analytics</p>
         <h1>Last Mile Health KPI Agent</h1>
         <p>LangGraph multi-agent text-to-SQL system for querying global health KPI data in natural language.</p>
-        <div class="case-actions"><a href="https://github.com/Last-Mile-Health/lmd-2-agent">View GitHub</a><a href="/#projects">Back to portfolio</a></div>
+        <div class="case-actions"><span>Currently Closed Source</span><a href="/#projects">Back to portfolio</a></div>
       </header>
       <section class="case-section case-two-col">
-        <div><p class="section-label">Background</p><h2>Program teams needed a faster way to retrieve community health worker training and operations metrics without hand-writing Redshift SQL for each analytical question.</h2><p class="case-copy">This project turns operational public-health questions into structured database queries. The core challenge is not only generating SQL, but generating it with enough schema context, guardrails, and retry behavior that a program team can trust repeated KPI lookups.</p><p class="case-copy">Read this page as a systems project: the visualizations show where the agent spends time, how a question flows through the pipeline, and how the backend returns a chart-ready contract instead of a raw notebook output.</p></div>
-        <div><p class="section-label">Project Workflow</p><article class="thought-row"><strong>Protect analytical access</strong><p>Route natural-language questions through an agent that can inspect schema context without exposing private warehouse data on the portfolio.</p></article><article class="thought-row"><strong>Constrain SQL generation</strong><p>Retrieve relevant schema, validate generated SQL, and use bounded correction when warehouse errors indicate a fixable query issue.</p></article><article class="thought-row"><strong>Reduce repeated latency</strong><p>Cache schema and repeated query context so common KPI questions can move from expensive discovery to faster answer synthesis.</p></article><article class="thought-row"><strong>Return frontend-ready charts</strong><p>When the user asks for a chart, emit a small chart_spec object that any portal charting library can render.</p></article></div>
+        <div><p class="section-label">Background</p><h2>Last Mile Health needed a faster, more accessible way for staff to analyze community health data without manually querying its data warehouse.</h2><p class="case-copy">LMD 2.0 tracks program data supporting ~30,000 community health workers across four countries. Its AI agent was designed to make this data accessible through natural-language questions, but 1-2 minute response times and limited database context produced slow and sometimes unreliable answers, limiting its usefulness for staff</p></div>
+        <div><p class="section-label">Project Goals</p><article class="thought-row"><strong>Reduce response latency</strong><p>Cache database schema and query context to reduce the time required to answer common operational and KPI questions.</p></article><article class="thought-row"><strong>Improve Query Reliability</strong><p>Ground SQL generation in relevant database schema, validate generated queries, and automatically correct fixable query errors.</p></article><article class="thought-row"><strong>Integrate Agent with Slack</strong><p>Bring the AI agent into staff workflows by enabling teams to query LMD 2.0 data directly through Slack.</p></article></div>
       </section>
       
     <section class="case-section lmd-figures-section">
       <div class="case-section-head">
         <p class="section-label">Planning Artifacts</p>
         <h2>Architecture moved from hand sketch to workflow mockup.</h2>
-        <p class="case-copy">The sketch captures the original control-flow thinking: a master agent routes the request, schema retrieval decides whether cached metadata is enough, SQL generation and validation are separated, and bounded correction loops prevent uncontrolled retries.</p>
+        <p class="case-copy">To achieve our project goals of reducing latency and adding context, we proposed a multi-agent system. Planning started with a sketch of the system, including a master agent routing agent, database schema retrieval, SQL generation agents, a deterministic SQL validation tool, and bounded correction loops prevent uncontrolled retries and burning API tokens.</p>
+        <p class="case-copy">After sketching out the system, we drafted a demo of the system using n8n, a node-based AI orchestration platform, to test the efficacy of using multiple agents with deterministic tooling and present improvements to latency and accuracy before moving to production.</p>
       </div>
       <div class="lmd-figure-grid">
-        <figure><img src="/lmd-case/planning-sketch.jpg" alt="Handwritten planning sketch showing the master agent and SQL workflow."><figcaption>Early planning sketch for the multi-agent SQL flow, including schema retrieval, validation, correction, and final error handling.</figcaption></figure>
-        <figure><img src="/lmd-case/n8n-architecture.png" alt="Visual workflow architecture mockup for the LMD 2.0 AI agent."><figcaption>Workflow mockup extracted from the deliverables PDF, used to reason about agent routing and execution order.</figcaption></figure>
+        <figure><img src="/lmd-case/planning-sketch.jpg" alt="Handwritten planning sketch showing the master agent and SQL workflow."><figcaption>Early planning sketch for the multi-agent SQL system.</figcaption></figure>
+        <figure><img src="/lmd-case/n8n-architecture.png" alt="Visual workflow architecture mockup for the LMD 2.0 AI agent."><figcaption>n8n mockup of the multi-agent text-to-SQL system.</figcaption></figure>
       </div>
     </section>
     <section class="case-section">
@@ -58,10 +59,6 @@
         <span>06</span>
         <strong>Result formatter</strong>
         <p>Summarizes query rows and prepares preview-safe response metadata.</p>
-      </article><article>
-        <span>07</span>
-        <strong>Visualization agent</strong>
-        <p>Builds a minimal chart_spec when the query result is plottable.</p>
       </article></div>
     </section>
     <div class="project-visualization-enhancement" data-project-visualizations="last-mile-health-ai-assistant" data-artifact="/assets/project-artifacts/last-mile-health-ai-assistant.json" hidden></div>

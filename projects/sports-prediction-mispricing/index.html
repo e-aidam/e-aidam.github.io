@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sports Prediction Mispricing | Ethan Aidam</title>
-  <meta name="description" content="Kalshi NBA prediction-market analysis joined to ESPN win-probability shocks to test whether markets overreact or underreact in game.">
+  <meta name="description" content="Machine learning and time-series models analyzing how NBA prediction markets respond to major in-game win-probability shocks.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/assets/styles.css">
 </head>
@@ -13,13 +13,37 @@
         <nav><a href="/">Ethan Aidam</a><a href="/#projects">Projects</a><a href="https://github.com/e-aidam/cs1090b_sports_prediction_mispricing">GitHub</a></nav>
         <p class="eyebrow">Sports market machine learning</p>
         <h1>Sports Prediction Mispricing</h1>
-        <p>Kalshi NBA prediction-market analysis joined to ESPN win-probability shocks to test whether markets overreact or underreact in game.</p>
+        <p>Machine learning and time-series models analyzing how NBA prediction markets respond to major in-game win-probability shocks.</p>
         <div class="case-actions"><a href="https://github.com/e-aidam/cs1090b_sports_prediction_mispricing">View GitHub</a><a href="/#projects">Back to portfolio</a></div>
       </header>
       <section class="case-section case-two-col">
-        <div><p class="section-label">Background</p><h2>NBA prediction markets can move quickly after major in-game win-probability swings, but it is unclear whether those moves systematically overreact to new information or update too slowly.</h2><p class="case-copy">This project studies whether NBA prediction markets systematically misprice sudden in-game information. It joins Kalshi KXNBAGAME market candles with ESPN play-by-play win-probability shocks from the 2026 NBA playoffs, then asks whether one-minute price moves overreact, underreact, or update efficiently after major plays.</p><p class="case-copy">Read this page as a market microstructure and sequence-modeling project: the analysis defines event windows around win-probability shocks, labels market response behavior, and compares tabular baselines with models that can read the local 20-minute price path.</p></div>
-        <div><p class="section-label">Project Workflow</p><article class="thought-row"><strong>Define a market response window</strong><p>Use ESPN play-by-play win-probability jumps as event anchors, then inspect Kalshi one-minute prices around each shock.</p></article><article class="thought-row"><strong>Build leakage-safe sequences</strong><p>Group train/test splits by game and represent each shock-market pair as a fixed-length OHLCV sequence so models cannot memorize games across splits.</p></article><article class="thought-row"><strong>Separate overreaction from slow updating</strong><p>Compare the market price move against the win-probability shock to distinguish rare large overreactions from the more common underreaction pattern.</p></article><article class="thought-row"><strong>Compare tabular and sequence models</strong><p>Benchmark logistic and linear baselines against LSTM and Transformer models that can use the full local price path.</p></article></div>
+        <div><p class="section-label">Background</p><h2>Do prediction markets react rationally to major events during NBA games?</h2><p class="case-copy">Prediction-market prices reflect traders’ expectations about real-world outcomes, but emotionally charged moments may cause markets to respond inefficiently. In NBA games, high-impact plays can produce sudden changes in win probability while simultaneously driving trading activity on prediction markets.</p><p class="case-copy">We combined Kalshi prediction-market data with ESPN game and win-probability data to study how market prices adjust after influential plays, whether those adjustments reveal overreaction and mispricing, and whether short-term market responses can be predicted from recent trading behavior.</p></div>
+        <div><p class="section-label">Project Goals</p><article class="thought-row"><strong>Identify High-Impact NBA Events</strong><p>Use changes in ESPN win probability to identify influential plays that provide natural event shocks for studying prediction-market behavior.</p></article><article class="thought-row"><strong>Measure Market Reactions</strong><p>Align each win-probability shock with Kalshi market candles and quantify how prediction-market prices respond immediately after the event.</p></article><article class="thought-row"><strong>Detect Potential Mispricing</strong><p>Compare changes in win probability with corresponding market movements to distinguish appropriate reactions from potential overreactions.</p></article><article class="thought-row"><strong>Predict Short-Term Market Behavior</strong><p>Compare traditional machine-learning baselines with LSTM and Transformer sequence models for predicting market direction and price one minute after a shock.</p></article></div>
       </section>
+    <section class="case-section">
+      <div class="case-section-head"><p class="section-label">Project Workflow</p></div>
+      <div class="workflow-strip"><article>
+        <span>01</span>
+        <strong>Identify Win-Probability Shocks</strong>
+        <p>Use ESPN play-by-play data to identify NBA events associated with changes of at least 5% in game win probability.</p>
+      </article><article>
+        <span>02</span>
+        <strong>Align Market and Game Data</strong>
+        <p>Match ESPN events to Kalshi market candles and filter sequences for sufficient temporal coverage and data quality.</p>
+      </article><article>
+        <span>03</span>
+        <strong>Construct Event Sequences</strong>
+        <p>Build 20-minute windows around each shock so models can observe how market prices behave before and immediately after influential plays.</p>
+      </article><article>
+        <span>04</span>
+        <strong>Classify Market Direction</strong>
+        <p>Train Logistic Regression, Histogram Gradient Boosting, LSTM, and Transformer classifiers to predict the direction of the market one minute after an event.</p>
+      </article><article>
+        <span>05</span>
+        <strong>Forecast Market Price</strong>
+        <p>Use linear, gradient-boosting, LSTM, and Transformer regression models to predict the Kalshi contract price one minute after a win-probability shock.</p>
+      </article></div>
+    </section>
       
     <div class="project-visualization-enhancement" data-project-visualizations="sports-prediction-mispricing" data-artifact="/assets/project-artifacts/sports-prediction-mispricing.json" hidden></div>
     <section class="case-section project-figure-section">
@@ -30,16 +54,25 @@
     </div>
     <div class="project-figure-grid">
       <figure>
+            <img src="/sports-mispricing/event-model-vs-true.png" alt="Line chart comparing model predictions with true post-shock market price for a held-out event.">
+            <figcaption><strong>Held-out event sequence</strong>Sequence models track the immediate post-shock price path more closely than tabular baselines.</figcaption>
+          </figure><figure>
             <img src="/sports-mispricing/wp-vs-price-mispricing.png" alt="Scatter plot comparing ESPN win-probability shocks with Kalshi price changes around NBA events.">
             <figcaption><strong>Win probability shock vs. market move</strong>Most market moves do not scale cleanly with shock size, and true one-minute overreactions are rare.</figcaption>
           </figure><figure>
             <img src="/sports-mispricing/mispricing-classification.png" alt="Classification figure distinguishing underreaction, efficient response, and overreaction windows.">
             <figcaption><strong>Mispricing classification</strong>The labeling frame separates slow updates from genuine overreactions rather than treating every price gap as the same kind of error.</figcaption>
-          </figure><figure>
-            <img src="/sports-mispricing/event-model-vs-true.png" alt="Line chart comparing model predictions with true post-shock market price for a held-out event.">
-            <figcaption><strong>Held-out event sequence</strong>Sequence models track the immediate post-shock price path more closely than tabular baselines.</figcaption>
           </figure>
     </div>
+  </section>
+      <section class="case-section">
+    <div class="case-section-head">
+      <p class="section-label">Key Result</p>
+      <h2>Sequence models accurately predict short-term Kalshi responses to influential NBA events.</h2>
+      <p class="case-copy">The strongest classification model, the LSTM, achieved 82.2% balanced accuracy when predicting one-minute market direction. For price forecasting, the LSTM achieved an R² of 0.994, outperforming both conventional machine-learning baselines and the Transformer.</p>
+      <p class="case-copy">Together, the results show that incorporating the temporal structure of prediction-market prices around NBA win-probability shocks substantially improves short-horizon market prediction.</p>
+    </div>
+    <div class="sports-model-chart" data-sports-model-chart></div>
   </section>
       <section class="case-section presentation-section">
     <div class="case-section-head">
@@ -60,28 +93,6 @@
       </div>
       <div class="presentation-scrubber">
         <a href="/project-decks/previews/sports-mispricing/slide-1.png" aria-label="Open slide 1"><img src="/project-decks/previews/sports-mispricing/slide-1.png" alt=""><span>1</span></a><a href="/project-decks/previews/sports-mispricing/slide-2.png" aria-label="Open slide 2"><img src="/project-decks/previews/sports-mispricing/slide-2.png" alt=""><span>2</span></a><a href="/project-decks/previews/sports-mispricing/slide-3.png" aria-label="Open slide 3"><img src="/project-decks/previews/sports-mispricing/slide-3.png" alt=""><span>3</span></a><a href="/project-decks/previews/sports-mispricing/slide-4.png" aria-label="Open slide 4"><img src="/project-decks/previews/sports-mispricing/slide-4.png" alt=""><span>4</span></a><a href="/project-decks/previews/sports-mispricing/slide-5.png" aria-label="Open slide 5"><img src="/project-decks/previews/sports-mispricing/slide-5.png" alt=""><span>5</span></a><a href="/project-decks/previews/sports-mispricing/slide-6.png" aria-label="Open slide 6"><img src="/project-decks/previews/sports-mispricing/slide-6.png" alt=""><span>6</span></a><a href="/project-decks/previews/sports-mispricing/slide-7.png" aria-label="Open slide 7"><img src="/project-decks/previews/sports-mispricing/slide-7.png" alt=""><span>7</span></a><a href="/project-decks/previews/sports-mispricing/slide-8.png" aria-label="Open slide 8"><img src="/project-decks/previews/sports-mispricing/slide-8.png" alt=""><span>8</span></a><a href="/project-decks/previews/sports-mispricing/slide-9.png" aria-label="Open slide 9"><img src="/project-decks/previews/sports-mispricing/slide-9.png" alt=""><span>9</span></a><a href="/project-decks/previews/sports-mispricing/slide-10.png" aria-label="Open slide 10"><img src="/project-decks/previews/sports-mispricing/slide-10.png" alt=""><span>10</span></a><a href="/project-decks/previews/sports-mispricing/slide-11.png" aria-label="Open slide 11"><img src="/project-decks/previews/sports-mispricing/slide-11.png" alt=""><span>11</span></a><a href="/project-decks/previews/sports-mispricing/slide-12.png" aria-label="Open slide 12"><img src="/project-decks/previews/sports-mispricing/slide-12.png" alt=""><span>12</span></a>
-      </div>
-    </div>
-  </section>
-      <section class="case-section presentation-section report-section">
-    <div class="case-section-head">
-      <p class="section-label">Associated Report</p>
-      <h2>CS 1090B Sports Mispricing Final Report</h2>
-      <p class="case-copy">Final report covering the project motivation, Kalshi and ESPN data construction, model comparisons, limitations, and interpretation of market underreaction versus overreaction.</p>
-    </div>
-    <div class="presentation-viewer report-viewer">
-      <div class="presentation-toolbar">
-        <span>10 pages</span>
-        <a class="asset-download-link" href="/project-reports/sports-mispricing-final-report.pdf" download>Download report</a>
-      </div>
-      <div class="presentation-stage report-stage static-presentation-stage">
-        <figure>
-          <img src="/project-reports/previews/sports-mispricing/page-1.png" alt="CS 1090B Sports Mispricing Final Report, page 1 of 10">
-          <figcaption>Page 1 of 10</figcaption>
-        </figure>
-      </div>
-      <div class="presentation-scrubber">
-        <a href="/project-reports/previews/sports-mispricing/page-1.png" aria-label="Open page 1"><img src="/project-reports/previews/sports-mispricing/page-1.png" alt=""><span>1</span></a><a href="/project-reports/previews/sports-mispricing/page-2.png" aria-label="Open page 2"><img src="/project-reports/previews/sports-mispricing/page-2.png" alt=""><span>2</span></a><a href="/project-reports/previews/sports-mispricing/page-3.png" aria-label="Open page 3"><img src="/project-reports/previews/sports-mispricing/page-3.png" alt=""><span>3</span></a><a href="/project-reports/previews/sports-mispricing/page-4.png" aria-label="Open page 4"><img src="/project-reports/previews/sports-mispricing/page-4.png" alt=""><span>4</span></a><a href="/project-reports/previews/sports-mispricing/page-5.png" aria-label="Open page 5"><img src="/project-reports/previews/sports-mispricing/page-5.png" alt=""><span>5</span></a><a href="/project-reports/previews/sports-mispricing/page-6.png" aria-label="Open page 6"><img src="/project-reports/previews/sports-mispricing/page-6.png" alt=""><span>6</span></a><a href="/project-reports/previews/sports-mispricing/page-7.png" aria-label="Open page 7"><img src="/project-reports/previews/sports-mispricing/page-7.png" alt=""><span>7</span></a><a href="/project-reports/previews/sports-mispricing/page-8.png" aria-label="Open page 8"><img src="/project-reports/previews/sports-mispricing/page-8.png" alt=""><span>8</span></a><a href="/project-reports/previews/sports-mispricing/page-9.png" aria-label="Open page 9"><img src="/project-reports/previews/sports-mispricing/page-9.png" alt=""><span>9</span></a><a href="/project-reports/previews/sports-mispricing/page-10.png" aria-label="Open page 10"><img src="/project-reports/previews/sports-mispricing/page-10.png" alt=""><span>10</span></a>
       </div>
     </div>
   </section>

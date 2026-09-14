@@ -13,9 +13,12 @@
       stack: ["Python", "SQL", "LangGraph / LangChain", "AWS Bedrock"],
       methods: ["Text-to-SQL", "Schema retrieval", "Retry logic", "Query caching"],
       result:
-        "Reduced repeated response latency from 2-5 minutes to seconds while improving reliability for KPI questions.",
+        "Reduced repeated response latency from 1-2 minutes to seconds while improving reliability for KPI questions.",
       route: "/projects/last-mile-health-ai-assistant/",
-      githubUrl: "https://github.com/Last-Mile-Health/lmd-2-agent",
+      thumbnail: "/home/thumbnails/last-mile-health-ai-assistant.jpg",
+      thumbnailAlt:
+        "A community health worker vaccinates an infant held by their mother at a village clinic.",
+      sourceLabel: "Closed Source",
     },
     {
       id: "hyperthermia-gsea",
@@ -32,6 +35,10 @@
       result:
         "Validated enrichment scores against GSEA Software and identified heat shock and proteostasis pathway enrichment.",
       route: "/projects/hyperthermia-gsea/",
+      thumbnail: "/home/thumbnails/hyperthermia-gsea.jpg",
+      thumbnailAlt:
+        "Diagram of three human body figures color-coded by skin and core temperature during heat exposure.",
+      thumbnailFit: "contain",
       githubUrl: "https://github.com/e-aidam/stat114_gsea_proj",
     },
     {
@@ -49,6 +56,9 @@
       result:
         "Achieved 0.92 R2 in blood lactate prediction using ensemble machine learning models",
       route: "/projects/blood-lactate-prediction/",
+      thumbnail: "/home/thumbnails/blood-lactate-prediction.jpg",
+      thumbnailAlt:
+        "A cyclist wearing a metabolic gas-exchange mask rides a stationary bike while a technician monitors the test.",
       githubUrl: "https://github.com/DavidStryder/CS109A---Final-Project-Blood-Lactate-Analysis",
     },
     {
@@ -56,7 +66,7 @@
       title: "Sports Prediction Mispricing",
       domain: "Sports market machine learning",
       summary:
-        "Kalshi NBA prediction-market analysis joined to ESPN win-probability shocks to test whether markets overreact or underreact in game.",
+        "Machine learning and time-series models analyzing how NBA prediction markets respond to major in-game win-probability shocks.",
       problem:
         "NBA prediction markets can move quickly after major in-game win-probability swings, but it is unclear whether those moves systematically overreact to new information or update too slowly.",
       approach:
@@ -66,6 +76,9 @@
       result:
         "Found that true one-minute overreactions were rare, while sequence models tracked immediate market responses substantially better than traditional ML baselines.",
       route: "/projects/sports-prediction-mispricing/",
+      thumbnail: "/home/thumbnails/sports-prediction-mispricing.jpg",
+      thumbnailAlt:
+        "A packed NBA arena during pre-game player introductions.",
       githubUrl: "https://github.com/e-aidam/cs1090b_sports_prediction_mispricing",
     },
     {
@@ -83,6 +96,9 @@
       result:
         "Developed a web interface for viewing past Strava activities with route details, activity statistics, customizable map themes, and location search.",
       route: "/projects/heatmaps/",
+      thumbnail: "/home/thumbnails/heatmaps.jpg",
+      thumbnailAlt:
+        "Topographic map overlaid with orange GPS activity tracks and clustered photo pins.",
       githubUrl: "https://github.com/e-aidam/Heatmaps",
     },
     {
@@ -100,6 +116,10 @@
       result:
         "Created a reproducible workflow for investigating disease-associated genetic variants in canine genomic data.",
       route: "/projects/canine-snp-proj/",
+      thumbnail: "/home/thumbnails/canine-snp-proj.png",
+      thumbnailAlt:
+        "Diagram of three dog silhouettes beside DNA double helices with a single highlighted SNP base.",
+      thumbnailFit: "contain",
       githubUrl: "https://github.com/e-aidam/canine-snp-proj",
     },
     {
@@ -117,6 +137,9 @@
       result:
         "Created a converter for moving playlist content from Musi iOS playlist URLs into Spotify.",
       route: "/projects/musi-to-spotify/",
+      thumbnail: "/home/thumbnails/musi-to-spotify.webp",
+      thumbnailAlt:
+        "Two Spotify logos, one white and one black, on a bright green field.",
       githubUrl: "https://github.com/e-aidam/musi-to-spotify",
     },
   ];
@@ -175,9 +198,20 @@
   const renderPills = (items) =>
     items.map((item) => `<span>${escapeHtml(item)}</span>`).join("");
 
+  const renderThumb = (project) => {
+    if (!project.thumbnail) {
+      return "";
+    }
+
+    const fitClass = project.thumbnailFit === "contain" ? " detail-thumb-contain" : "";
+
+    return `<div class="detail-thumb${fitClass}"><img src="${escapeHtml(project.thumbnail)}" alt="${escapeHtml(project.thumbnailAlt || "")}" decoding="async"></div>`;
+  };
+
   const renderDetail = (project) => {
     detailPanel.hidden = false;
     detailPanel.innerHTML = `
+      ${renderThumb(project)}
       <span class="detail-domain">${escapeHtml(project.domain)}</span>
       <h3>${escapeHtml(project.title)}</h3>
       <dl>
@@ -188,7 +222,7 @@
       <div class="tag-group" aria-label="Project stack">${renderPills(project.stack)}</div>
       <div class="detail-actions">
         <a href="${escapeHtml(project.route)}">View project</a>
-        <a href="${escapeHtml(project.githubUrl)}">GitHub</a>
+        ${project.githubUrl ? `<a href="${escapeHtml(project.githubUrl)}">GitHub</a>` : `<span>${escapeHtml(project.sourceLabel || "Closed Source")}</span>`}
       </div>
     `;
   };

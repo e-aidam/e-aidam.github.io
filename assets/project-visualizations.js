@@ -57,6 +57,28 @@
       .text(displayValue(tick));
   }
 
+  function splitAxisLabel(value, maxLineLength = 24, maxLines = 2) {
+    const words = text(value).split(/\s+/).filter(Boolean);
+    const lines = [];
+
+    words.forEach((word) => {
+      const current = lines[lines.length - 1] || "";
+      if (!current || `${current} ${word}`.length > maxLineLength) {
+        lines.push(word);
+      } else {
+        lines[lines.length - 1] = `${current} ${word}`;
+      }
+    });
+
+    if (lines.length > maxLines) {
+      const visible = lines.slice(0, maxLines);
+      visible[maxLines - 1] = `${visible[maxLines - 1].replace(/\.*$/, "")}...`;
+      return visible;
+    }
+
+    return lines;
+  }
+
   function createElement(tagName, className, html) {
     const element = document.createElement(tagName);
     if (className) {
@@ -82,11 +104,13 @@
     return { frame, readout, insertChart: (chart) => frame.insertBefore(chart, meta) };
   }
 
-  function renderBarChart({ data, xKey, yKey, unit = "", caption, ariaLabel }) {
+  function renderBarChart({ data, xKey, yKey, unit = "", caption, ariaLabel, showCategoryLabels = false, showValueLabels = true, title, fixedHeight }) {
     const { frame, readout, insertChart } = createChartFrame(caption);
     const width = 760;
-    const height = Math.max(250, data.length * 48 + 76);
-    const margin = { top: 28, right: 104, bottom: 42, left: 58 };
+    const rowHeight = showCategoryLabels ? 58 : 48;
+    const heightPadding = showCategoryLabels ? 116 : 76;
+    const height = fixedHeight || Math.max(showCategoryLabels ? 280 : 250, data.length * rowHeight + heightPadding);
+    const margin = { top: title ? 54 : 28, right: 104, bottom: 56, left: showCategoryLabels ? 238 : 58 };
     const labelPadding = 14;
     const values = data.map((item) => numberValue(item[yKey]));
     const maxMagnitude = d3.max(values.map(Math.abs)) || 1;
@@ -110,6 +134,15 @@
       .attr("role", "img")
       .attr("aria-label", ariaLabel || `${featureLabels[yKey] || yKey} bar chart built with D3 scales`);
 
+    if (title) {
+      svg
+        .append("text")
+        .attr("class", "chart-svg-title")
+        .attr("x", margin.left)
+        .attr("y", 26)
+        .text(title);
+    }
+
     xTicks.forEach((tick) => {
       const group = svg.append("g");
       group
@@ -119,15 +152,16 @@
         .attr("y1", margin.top - 8)
         .attr("x2", xScale(tick))
         .attr("y2", height - margin.bottom);
-      group
-        .append("text")
-        .attr("class", "chart-tick")
-        .attr("x", Math.max(margin.left, Math.min(width - margin.right, xScale(tick))))
-        .attr("y", height - 18)
-        .attr("text-anchor", tick === xTicks.at(-1) ? "end" : tick === xTicks[0] ? "start" : "middle")
-        .text(displayValue(tick));
+      appendSafeXAxisTick(svg, tick, xTicks, xScale, height - margin.bottom + 24, margin, width);
     });
 
+    svg
+      .append("line")
+      .attr("class", "chart-axis")
+      .attr("x1", margin.left)
+      .attr("y1", height - margin.bottom)
+      .attr("x2", width - margin.right)
+      .attr("y2", height - margin.bottom);
     svg
       .append("line")
       .attr("class", "chart-axis")
@@ -139,7 +173,7 @@
       .append("text")
       .attr("class", "chart-axis-title")
       .attr("x", margin.left)
-      .attr("y", height - 4)
+      .attr("y", height - 8)
       .text(featureLabels[yKey] || yKey);
 
     let activeIndex = 0;
@@ -152,6 +186,26 @@
       .attr("tabindex", 0);
 
     groups.append("title").text((item) => `${text(item[xKey])}: ${displayValue(numberValue(item[yKey]), unit)}`);
+    if (showCategoryLabels) {
+      groups
+        .append("text")
+        .attr("class", "chart-category-label")
+        .attr("x", margin.left - 14)
+        .attr("y", (item, index) => (yScale(`${index}-${text(item[xKey])}`) || margin.top) + yScale.bandwidth() / 2)
+        .attr("text-anchor", "end")
+        .each(function (item) {
+          const label = d3.select(this);
+          const lines = splitAxisLabel(item[xKey]);
+          const lineHeight = 14;
+          lines.forEach((line, lineIndex) => {
+            label
+              .append("tspan")
+              .attr("x", margin.left - 14)
+              .attr("dy", lineIndex === 0 ? `${-(lines.length - 1) * lineHeight * 0.5 + 4}px` : `${lineHeight}px`)
+              .text(line);
+          });
+        });
+    }
     groups
       .append("rect")
       .attr("class", "d3-hit-area")
@@ -169,19 +223,21 @@
       .attr("y", (item, index) => yScale(`${index}-${text(item[xKey])}`) || margin.top)
       .attr("width", (item) => Math.max(2, Math.abs(xScale(numberValue(item[yKey])) - zeroX)))
       .attr("height", yScale.bandwidth());
-    groups
-      .append("text")
-      .attr("class", "chart-value-label")
-      .attr("x", (item) => {
-        const value = numberValue(item[yKey]);
-        if (value < 0) {
-          return labelPadding;
-        }
-        return width - labelPadding;
-      })
-      .attr("y", (item, index) => (yScale(`${index}-${text(item[xKey])}`) || margin.top) + yScale.bandwidth() / 2 + 4)
-      .attr("text-anchor", (item) => (numberValue(item[yKey]) < 0 ? "start" : "end"))
-      .text((item) => displayValue(numberValue(item[yKey]), unit));
+    if (showValueLabels) {
+      groups
+        .append("text")
+        .attr("class", "chart-value-label")
+        .attr("x", (item) => {
+          const value = numberValue(item[yKey]);
+          if (value < 0) {
+            return labelPadding;
+          }
+          return width - labelPadding;
+        })
+        .attr("y", (item, index) => (yScale(`${index}-${text(item[xKey])}`) || margin.top) + yScale.bandwidth() / 2 + 4)
+        .attr("text-anchor", (item) => (numberValue(item[yKey]) < 0 ? "start" : "end"))
+        .text((item) => displayValue(numberValue(item[yKey]), unit));
+    }
 
     const setActive = (index) => {
       activeIndex = Math.max(0, Math.min(data.length - 1, index));
@@ -212,11 +268,11 @@
     return frame;
   }
 
-  function renderLineChart({ data, xKey, yKey, seriesKey, caption, ariaLabel }) {
+  function renderLineChart({ data, xKey, yKey, seriesKey, caption, ariaLabel, title }) {
     const { frame, readout, insertChart } = createChartFrame(caption);
     const width = 760;
     const height = 320;
-    const margin = { top: 28, right: 32, bottom: 54, left: 58 };
+    const margin = { top: title ? 62 : 28, right: 32, bottom: 54, left: 58 };
     const xScale = d3
       .scaleLinear()
       .domain(extentWithFallback(data.map((item) => numberValue(item[xKey]))))
@@ -273,8 +329,16 @@
       .attr("y1", margin.top)
       .attr("x2", margin.left)
       .attr("y2", height - margin.bottom);
+    if (title) {
+      svg.append("text").attr("class", "chart-svg-title").attr("x", margin.left).attr("y", 26).text(title);
+    }
     svg.append("text").attr("class", "chart-axis-title").attr("x", margin.left).attr("y", height - 6).text(featureLabels[xKey] || xKey);
-    svg.append("text").attr("class", "chart-axis-title").attr("x", margin.left).attr("y", 16).text(featureLabels[yKey] || yKey);
+    svg
+      .append("text")
+      .attr("class", "chart-axis-title")
+      .attr("x", margin.left)
+      .attr("y", title ? margin.top - 12 : 16)
+      .text(featureLabels[yKey] || yKey);
 
     const seriesValues = seriesKey ? Array.from(new Set(data.map((item) => item[seriesKey]))) : ["all"];
     seriesValues.forEach((series, index) => {
@@ -434,46 +498,40 @@
 
   function renderLastMileHealth(mount, artifact) {
     const fragment = document.createDocumentFragment();
-    const grid = createElement("section", "case-section case-two-col");
-    const chartColumn = createElement(
-      "div",
-      "",
-      `<p class="section-label">Benchmarks</p><h2>Latency exposes where the agent does real work.</h2><p class="case-copy">Bars show average warm-request latency in seconds for representative prompts. Hover or tab through the rows to inspect exact values; database-backed questions take longer because they run schema lookup, SQL generation, execution, and result formatting.</p>`
+    const benchmarks = createElement(
+      "section",
+      "case-section",
+      `<div class="case-section-head"><p class="section-label">Benchmarks</p><h2>Latency exposes where the agent does real work.</h2><p class="case-copy">The benchmark results show whether the redesign made the agent usable in practice: routine KPI questions return quickly enough for staff-facing workflows, while slower database-backed prompts make the remaining optimization targets visible.</p></div>`
     );
-    chartColumn.append(
+    const benchmarkGrid = createElement("div", "benchmark-grid");
+    benchmarkGrid.append(
+      renderTable(
+        ["Query", "Avg", "Cold", "Rows"],
+        (artifact.benchmarks || []).map((row) => [row.query, `${numberValue(row.avg).toFixed(2)}s`, `${numberValue(row.cold).toFixed(2)}s`, row.rows == null ? "-" : row.rows])
+      ),
       renderBarChart({
         data: artifact.benchmarks || [],
         xKey: "query",
         yKey: "avg",
         unit: "s",
         caption: "X axis: benchmark prompt. Y value: average warm latency in seconds.",
+        showCategoryLabels: true,
+        title: "Average latency by benchmark query",
       })
     );
-    grid.append(
-      chartColumn,
-      renderTable(
-        ["Query", "Avg", "Cold", "Rows"],
-        (artifact.benchmarks || []).map((row) => [row.query, `${numberValue(row.avg).toFixed(2)}s`, `${numberValue(row.cold).toFixed(2)}s`, row.rows == null ? "-" : row.rows])
-      )
-    );
-
-    const chartSpec = renderSection({
-      label: "Chart Spec",
-      title: "Visualization is returned as a small frontend contract.",
-      copy: "Instead of baking one charting system into the agent, the backend returns a compact chart specification. That lets a web app choose how to render the result while keeping the analysis response structured.",
-    });
-    chartSpec.append(createElement("pre", "code-card", escapeHtml(JSON.stringify(artifact.chartSpecExample || {}, null, 2))));
-    fragment.append(grid, chartSpec);
+    benchmarks.append(benchmarkGrid);
+    fragment.append(benchmarks);
     mount.append(fragment);
   }
 
   function renderGsea(mount, artifact) {
     const pathways = artifact.pathways || [];
     const fragment = document.createDocumentFragment();
-    const grid = createElement("section", "case-section case-two-col");
+
+    const grid = createElement("section", "case-section case-two-col gsea-chart-grid");
     const direction = createElement(
       "div",
-      "",
+      "gsea-direction-column",
       `<p class="section-label">Enrichment Direction</p><h2>Pathway signal is read by direction and magnitude.</h2><p class="case-copy">Positive scores indicate concentration toward the top of the ranked WBH-versus-sham contrast; negative scores indicate concentration toward the opposite end. Larger absolute values suggest stronger directional enrichment.</p>`
     );
     direction.append(
@@ -482,6 +540,9 @@
         xKey: "pathway",
         yKey: "nes",
         caption: "X axis: gene set. Bar value: normalized enrichment score; red bars indicate negative enrichment.",
+        showCategoryLabels: true,
+        title: "Normalized enrichment score by gene set",
+        fixedHeight: 320,
       })
     );
 
@@ -514,13 +575,18 @@
     running.append(select, chartHost);
     grid.append(direction, running);
 
+    const resultOrder = ["Heat Shock Proteostasis", "Dopamine", "Serotonin", "Interferon Signaling"];
+    const tablePathways = resultOrder
+      .map((pathwayName) => pathways.find((pathway) => pathway.pathway === pathwayName))
+      .filter(Boolean);
+
     const tableSection = renderSection({
-      label: "Result Table",
-      title: "Magnitude and uncertainty should be read together.",
-      copy: "ES is the raw enrichment score, NES is the normalized score, and adjusted p-value accounts for testing multiple pathways.",
+      label: "Results",
+      title: "WBH produced pathway-level enrichment trends.",
+      copy: "The analysis identified directional enrichment across the selected serotonin, dopamine, intermediate-signaling, and heat-shock gene sets. Results were evaluated using normalized enrichment scores, phenotype-permutation testing, and false-discovery-rate correction rather than interpreting enrichment magnitude alone.",
       content: renderTable(
-        ["Gene set", "ES", "NES", "Adj. p", "Genes"],
-        pathways.map((row) => [row.pathway, numberValue(row.es).toFixed(3), numberValue(row.nes).toFixed(3), numberValue(row.padj).toFixed(3), row.genes])
+        ["Gene set", "ES", "NES", "p-value", "Genes"],
+        tablePathways.map((row) => [row.pathway, numberValue(row.es).toFixed(3), numberValue(row.nes).toFixed(3), numberValue(row.pvalue ?? row.padj).toFixed(3), row.genes])
       ),
     });
 
@@ -552,7 +618,7 @@
     const timeColumn = createElement(
       "div",
       "",
-      `<p class="section-label">Time Series</p><h2>Each testing day has a distinct lactate profile.</h2><p class="case-copy">The line shows downsampled lactate measurements over elapsed exercise-test time. Switch days to see how the same physiological target shifts across sessions.</p>`
+      `<p class="section-label">Time Series</p><h2>Exercise days have distinct lactate trajectories.</h2><p class="case-copy">Time-series traces reveal periods of active exercise and rest between testing days. Heart rate, respiratory frequency, power, cadence, and lactate rise and fall differently across sessions, motivating models that can capture nonlinear and day-dependent behavior.</p>`
     );
     const timeChartHost = createElement("div");
     timeColumn.append(daySelect, timeChartHost);
@@ -560,7 +626,7 @@
     const scatterColumn = createElement(
       "div",
       "",
-      `<p class="section-label">Feature Relationship</p><h2>Explore lactate against non-invasive signals.</h2><p class="case-copy">Change the feature to compare lactate against heart rate, oxygen uptake, respiratory frequency, saturation, power, or cadence. Hover anywhere in the plot to select the nearest point.</p>`
+      `<p class="section-label">Feature Relationship</p><h2>Exploring lactate against non-invasive signals.</h2><p class="case-copy">Heart rate, respiratory frequency, cadence, and power cluster together as measures of exercise intensity, while lactate shows a moderately strong relationship with elapsed time. Oxygen saturation behaves differently, decreasing as exercise progresses and lactate rises.</p>`
     );
     const scatterChartHost = createElement("div");
     scatterColumn.append(featureSelect, scatterChartHost);
@@ -574,36 +640,32 @@
     );
     correlation.append(
       renderBarChart({
-        data: artifact.correlations || [],
+        data: (artifact.correlations || []).map((item) => ({
+          ...item,
+          feature: (featureLabels[item.feature] || text(item.feature)).replace(/\s*\([^)]*\)$/, ""),
+        })),
         xKey: "feature",
         yKey: "value",
-        caption: "X axis: physiological feature. Bar value: Pearson correlation with lactate.",
+        showCategoryLabels: true,
+        showValueLabels: false,
+        caption: "X axis: Pearson correlation with lactate. Y axis: physiological feature.",
       })
     );
     const model = createElement(
       "div",
       "",
-      `<p class="section-label">Model Comparison</p><h2>Flexible models improve over the linear baseline.</h2><p class="case-copy">The model comparison gives a compact view of predictive lift, while the written analysis explains why repeated testing days motivate uncertainty-aware modeling.</p>`
+      `<p class="section-label">Model Comparison</p><h2>Ensemble models substantially outperformed linear regression.</h2><p class="case-copy">The overall result supported the project hypothesis: nonlinear models were substantially better suited to predicting lactate from these physiological signals than linear models.</p>`
     );
     model.append(
       renderBarChart({
         data: artifact.modelPerformance || [],
         xKey: "model",
         yKey: "r2",
-        caption: "X axis: model family. Bar value: held-out R2.",
+        showCategoryLabels: true,
+        caption: "X axis: held-out R2. Y axis: model family.",
       })
     );
     secondGrid.append(correlation, model);
-
-    const tableSection = renderSection({
-      label: "Day Summary",
-      title: "Day-level summaries reveal protocol and physiology shifts.",
-      copy: "These summaries are useful before modeling because each day has different mean lactate, maximum lactate, and rest-like interval structure.",
-      content: renderTable(
-        ["Day", "Rows", "Mean lactate", "Max lactate", "Rest-like rows"],
-        daySummary.map((row) => [`Day ${row.day}`, row.records, row.meanLactate, row.maxLactate, row.restLikeRows])
-      ),
-    });
 
     const renderDayCharts = () => {
       const day = daySelect.value || text(daySummary[0]?.day);
@@ -628,64 +690,43 @@
 
     daySelect.addEventListener("change", renderDayCharts);
     featureSelect.addEventListener("change", renderDayCharts);
-    fragment.append(firstGrid, secondGrid, tableSection);
+    fragment.append(firstGrid, secondGrid);
     mount.append(fragment);
     renderDayCharts();
   }
 
   function renderSports(mount, artifact) {
     const fragment = document.createDocumentFragment();
-    const d3Section = renderSection({
-      className: "case-section sports-d3-section",
-      label: "D3 Views",
-      title: "Native charts make the market-response results easier to scan.",
-      copy: "The project result is not simply that markets can move after a shock. The sharper finding is that true one-minute overreactions are rare, while models that can read the local OHLCV sequence do a much better job predicting immediate direction.",
-    });
-    const grid = createElement("div", "case-two-col");
-    const labelRarity = createElement(
-      "div",
-      "",
-      `<p class="section-label">Label Rarity</p><h2>Only a tiny share of sequences meet the strict overreaction rule.</h2><p class="case-copy">The README reports 21 true one-minute overreactions among 12,422 event-market sequences. That imbalance makes the overreaction finding more descriptive than directly predictive.</p>`
-    );
-    labelRarity.append(
-      renderBarChart({
-        data: artifact.overreactionShare || [],
-        xKey: "label",
-        yKey: "share",
-        unit: "%",
-        caption: "X axis: sequence label. Bar value: share of all event-market sequences.",
-      })
-    );
-    const model = createElement(
-      "div",
-      "",
-      `<p class="section-label">Model Comparison</p><h2>Sequence models outperform tabular baselines on direction.</h2><p class="case-copy">Balanced accuracy controls for the up, flat, and down classes. LSTM and Transformer models perform best because they consume the full 20-minute window instead of summary features alone.</p>`
-    );
-    model.append(
-      renderBarChart({
-        data: artifact.modelPerformance || [],
-        xKey: "model",
-        yKey: "balancedAccuracy",
-        unit: "%",
-        caption: "X axis: 1-minute direction model. Bar value: held-out balanced accuracy.",
-      })
-    );
-    grid.append(labelRarity, model);
-    d3Section.append(grid);
+    const modelChartHost = document.querySelector("[data-sports-model-chart]");
+    if (modelChartHost) {
+      modelChartHost.replaceChildren(
+        renderBarChart({
+          data: artifact.modelPerformance || [],
+          xKey: "model",
+          yKey: "balancedAccuracy",
+          unit: "%",
+          showCategoryLabels: true,
+          title: "Held-out balanced accuracy by model",
+          caption: "X axis: held-out balanced accuracy. Y axis: 1-minute direction model.",
+        })
+      );
+    }
 
     const eventSection = renderSection({
+      className: "case-section sports-event-section",
       label: "Event Window",
-      title: "A 20-minute price path anchors each shock.",
-      copy: "This example shows how the data is structured for sequence modeling: ten minutes before the play, the event minute, and the immediate post-shock response. The sharp post-event price drop is the kind of local pattern summary features can miss.",
+      title: "A 20-minute market sequence captures behavior surrounding each shock.",
+      copy: "Rather than representing an influential play with a single before-and-after price difference, each event retains its surrounding market history. This allows sequence models to learn patterns in recent price behavior and forecast the immediate post-event response.",
       content: renderLineChart({
         data: artifact.eventSequence || [],
         xKey: "minute",
         yKey: "price",
+        title: "Price path around a win-probability shock",
         caption: "X axis: minutes from the win-probability shock. Y axis: Kalshi yes-price in dollars.",
       }),
     });
 
-    fragment.append(d3Section, eventSection);
+    fragment.append(eventSection);
     mount.append(fragment);
   }
 

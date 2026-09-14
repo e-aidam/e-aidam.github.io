@@ -13,12 +13,12 @@
         <nav><a href="/">Ethan Aidam</a><a href="/#projects">Projects</a><a href="https://github.com/e-aidam/stat114_gsea_proj">GitHub</a></nav>
         <p class="eyebrow">RNA-seq bioinformatics</p>
         <h1>Hyperthermia Gene Set Enrichment Analysis</h1>
-        <p>End-to-end RNA-seq and GSEA workflow for whole-blood samples exposed to temperature stress.</p>
+        <p>End-to-end RNA-seq and GSEA workflow for whole-blood samples after exposure to temperature stress.</p>
         <div class="case-actions"><a href="https://github.com/e-aidam/stat114_gsea_proj">View GitHub</a><a href="/#projects">Back to portfolio</a></div>
       </header>
       <section class="case-section case-two-col">
-        <div><p class="section-label">Background</p><h2>Researchers were interested in whether heat exposure therapy enriches expression of hormonal gene pathways that could help to treat depression.</h2><p class="case-copy">Gene Set Enrichment Analysis asks whether groups of biologically related genes cluster near the top or bottom of a ranked differential-expression list. Instead of interpreting thousands of genes one at a time, the analysis moves up to pathways and cellular programs.</p><p class="case-copy">The important reading move is to compare direction, magnitude, and uncertainty: which pathways have positive or negative normalized enrichment, where the running-score curve peaks, and whether the adjusted p-value supports a confident interpretation.</p></div>
-        <div><p class="section-label">Project Workflow</p><article class="thought-row"><strong>Start from raw counts</strong><p>Use STAR-derived gene counts as the common substrate for filtering, identifier mapping, and differential expression.</p></article><article class="thought-row"><strong>Rank genes by treatment contrast</strong><p>Use DESeq2 log2 fold change for WBH versus sham to create the ordered list consumed by the custom GSEA statistic.</p></article><article class="thought-row"><strong>Implement GSEA manually</strong><p>Walk down the ranked list, increasing the running score on gene-set hits and penalizing misses to find the maximum enrichment deviation.</p></article><article class="thought-row"><strong>Stress-test significance</strong><p>Use phenotype-label permutations to estimate NES and p-values, then compare trends to Broad GSEA results.</p></article></div>
+        <div><p class="section-label">Background</p><h2>Can whole-body hyperthermia alter biological pathways implicated in depression?</h2><p class="case-copy">Whole-body hyperthermia (WBH) is a medical procedure that intentionally raises body temperature and has been investigated as a potential treatment for depression. Previous research found that heat shock, immune-response, and interleukin-6 pathways were enriched following WBH, but the effects of treatment on other depression-relevant pathways remained less clear.</p><p class="case-copy">We analyzed whole-blood RNA-seq data to investigate whether WBH alters expression across serotonin, dopamine, intermediate signaling, and heat-shock pathways, moving beyond individual genes to identify coordinated changes in biologically related gene sets.</p></div>
+        <div><p class="section-label">Project Goals</p><article class="thought-row"><strong>Reproduce Published Findings</strong><p>Reanalyze whole-blood RNA-seq data from a published WBH study and compare pathway-level results across differential-expression methods.</p></article><article class="thought-row"><strong>Implement GSEA From Scratch</strong><p>Build a custom Gene Set Enrichment Analysis pipeline to calculate enrichment scores, normalized enrichment scores, and permutation-based significance.</p></article><article class="thought-row"><strong>Investigate Depression-Relevant Pathways</strong><p>Test whether WBH produces coordinated expression changes in serotonin, dopamine, intermediate signaling, and heat-shock pathways.</p></article><article class="thought-row"><strong>Control Statistical Error</strong><p>Apply Benjamini-Hochberg and Storey multiple-testing corrections to distinguish exploratory pathway signals from statistically supported findings.</p></article></div>
       </section>
       
     <section class="case-section">
@@ -42,14 +42,17 @@
       </article><article>
         <span>05</span>
         <strong>Custom GSEA</strong>
-        <p>Compute running ES, NES, empirical p-values, and adjusted p-values.</p>
+        <p>Compute running ES, NES, empirical p-values, and adjusted p-values in R.</p>
       </article><article>
         <span>06</span>
         <strong>Broad GSEA</strong>
         <p>Compare custom results with preranked desktop analyses.</p>
       </article></div>
     </section>
-    <section class="case-section"><div class="case-section-head"><p class="section-label">Metric Definition</p><h2>NES means normalized enrichment score.</h2><p class="case-copy">The normalized enrichment score rescales a pathway's raw enrichment score against a permutation-based null distribution. That normalization makes gene sets with different sizes easier to compare, while the sign still shows which end of the ranked contrast contains the pathway genes.</p></div></section>
+    <section class="case-section case-two-col"><div class="case-section-head"><p class="section-label">Metric Definition</p><h2>NES measures the strength and direction of pathway enrichment.</h2><p class="case-copy">The Normalized Enrichment Score (NES) compares a gene set’s observed enrichment score with scores expected under phenotype permutations. Normalization allows enrichment to be compared across gene sets while preserving direction: positive NES values indicate enrichment toward genes elevated in WBH, while negative values indicate enrichment toward the opposite end of the ranked expression profile.</p></div><figure class="enrichment-figure">
+        <img src="/hyperthermia-gsea/enrichment-score.png" alt="Running enrichment score curve for the heat shock proteostasis gene set, rising to a peak of about 0.21 near rank 8,000 of the ordered gene list before falling below zero, with pathway gene positions marked as ticks along the bottom axis.">
+        <figcaption><strong>Running enrichment score, heat shock proteostasis</strong></figcaption>
+      </figure></section>
     <div class="project-visualization-enhancement" data-project-visualizations="hyperthermia-gsea" data-artifact="/assets/project-artifacts/hyperthermia-gsea.json" hidden></div>
       <section class="case-section presentation-section">
     <div class="case-section-head">

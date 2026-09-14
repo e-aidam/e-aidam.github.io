@@ -4,6 +4,7 @@
 
   const trigger = widget.querySelector("[data-profile-trigger]");
   const canvas = widget.querySelector("[data-antibody-canvas]");
+  const degradeButton = widget.querySelector("[data-degrade-antibody]");
   const ctx = canvas.getContext("2d", { alpha: true });
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -287,6 +288,7 @@
 
   trigger.addEventListener("click", startAntibody);
   canvas.addEventListener("click", hideAntibody);
+  degradeButton.addEventListener("click", hideAntibody);
   widget.addEventListener("pointermove", setPointer, { passive: true });
   widget.addEventListener("pointerleave", () => {
     pointer = null;
